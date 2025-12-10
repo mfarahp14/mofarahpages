@@ -1,109 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Mohammed Farah – Dynamic Font Typing</title>
+  <meta charset="UTF-8" />
+  <title>Mohammed Farah – Autoplay Name (Controlled Design)</title>
 
-<link href="https://fonts.googleapis.com/css2?family=
-JetBrains+Mono:wght@400;500&
-family=Inter:wght@400;600&
-family=Playfair+Display:wght@500;600&
-family=Orbitron:wght@400;600&
-family=Pacifico&
-display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  html, body {
-    height: 100%;
-  }
+    html, body {
+      height: 100%;
+    }
 
-  body {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:transparent;
-    font-family: system-ui, sans-serif;
-    color: inherit;
-  }
+    /* Fully transparent so it blends into Google Sites */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: inherit; /* follows Google Sites theme */
+    }
 
-  .cursor-reveal {
-    font-size: 32px;
-    letter-spacing: 0.06em;
-    transition: font-family 0.4s ease;
-    white-space: nowrap;
-  }
+    /* Main text container */
+    .cursor-reveal {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 32px;
+      white-space: nowrap;
+      transition:
+        letter-spacing 0.4s ease,
+        font-weight 0.4s ease,
+        opacity 0.4s ease,
+        transform 0.4s ease;
+      transform: translateZ(0); /* crisp rendering */
+    }
 
-  .cursor {
-    display:inline-block;
-    width:3px;
-    height:32px;
-    background:currentColor;
-    margin-left:3px;
-    animation: blink 1s steps(1) infinite;
-  }
+    /* Blinking cursor */
+    .cursor {
+      width: 3px;
+      height: 1em;
+      background: currentColor;
+      display: inline-block;
+      margin-left: 2px;
+      vertical-align: bottom;
+      animation: blink 1s steps(1) infinite;
+    }
 
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-</style>
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      50.01%, 100% { opacity: 0; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="cursor-reveal" id="textBox">
-  <span id="name"></span><span class="cursor"></span>
-</div>
 
-<script>
-const text = "MOHAMMED FARAH";
-const out = document.getElementById("name");
-const box = document.getElementById("textBox");
+  <div class="cursor-reveal">
+    <span id="name"></span><span class="cursor"></span>
+  </div>
 
-const fonts = [
-  "'JetBrains Mono', monospace",
-  "'Inter', sans-serif",
-  "'Playfair Display', serif",
-  "'Orbitron', sans-serif",
-  "'Pacifico', cursive"
-];
+  <script>
+    /* === CONFIG === */
+    const TEXT = "MOHAMMED FARAH";
 
-let i = 0;
-let deleting = false;
+    // Timing (tweak if you want)
+    const TYPE_SPEED = 90;
+    const DELETE_SPEED = 60;
+    const HOLD_AFTER_TYPE = 1200;
+    const HOLD_AFTER_DELETE = 500;
 
-const TYPE_SPEED = 100;
-const DELETE_SPEED = 60;
-const HOLD_AFTER_TYPE = 1200;
-const HOLD_AFTER_DELETE = 600;
+    // Elements
+    const nameEl = document.getElementById("name");
 
-function pickRandomFont() {
-  const choice = fonts[Math.floor(Math.random() * fonts.length)];
-  box.style.fontFamily = choice;
-}
+    // Typing state
+    let i = 0;
+    let deleting = false;
+    let styleIndex = 0;
 
-function autoplay() {
-  if (!deleting) {
-    if (i < text.length) {
-      out.textContent = text.slice(0, ++i);
-      setTimeout(autoplay, TYPE_SPEED);
-    } else {
-      setTimeout(() => deleting = true, HOLD_AFTER_TYPE);
-      setTimeout(autoplay, HOLD_AFTER_TYPE);
+    // Subtle, professional style presets
+    // These feel deliberate, not chaotic
+    const STYLE_PRESETS = [
+      { letterSpacing: "0.10em", fontWeight: "400", opacity: 0.9, transform: "translateY(0px)" },
+      { letterSpacing: "0.14em", fontWeight: "500", opacity: 1.0, transform: "translateY(-1px)" },
+      { letterSpacing: "0.12em", fontWeight: "600", opacity: 0.95, transform: "translateY(0px)" }
+    ];
+
+    function applyStyle() {
+      const s = STYLE_PRESETS[styleIndex];
+      Object.assign(nameEl.style, s);
     }
-  } else {
-    if (i > 0) {
-      out.textContent = text.slice(0, --i);
-      setTimeout(autoplay, DELETE_SPEED);
-    } else {
-      deleting = false;
-      pickRandomFont();
-      setTimeout(autoplay, HOLD_AFTER_DELETE);
-    }
-  }
-}
 
-pickRandomFont();
-autoplay();
-</script>
+    // Initialize first style
+    applyStyle();
+
+    function autoplay() {
+      if (!deleting) {
+        // Typing forward
+        if (i < TEXT.length) {
+          i++;
+          nameEl.textContent = TEXT.slice(0, i);
+          setTimeout(autoplay, TYPE_SPEED);
+        } else {
+          // Full word shown → pause → start deleting
+          setTimeout(() => deleting = true, HOLD_AFTER_TYPE);
+          setTimeout(autoplay, HOLD_AFTER_TYPE);
+        }
+      } else {
+        // Deleting backward
+        if (i > 0) {
+          i--;
+          nameEl.textContent = TEXT.slice(0, i);
+          setTimeout(autoplay, DELETE_SPEED);
+        } else {
+          // Fully cleared → next style → pause → type again
+          deleting = false;
+          styleIndex = (styleIndex + 1) % STYLE_PRESETS.length;
+          applyStyle();
+          setTimeout(autoplay, HOLD_AFTER_DELETE);
+        }
+      }
+    }
+
+    // Start animation
+    autoplay();
+  </script>
+
 </body>
 </html>
