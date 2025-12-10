@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Canny Image Demo</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+
+body {
+  background: transparent;
+  font-family: system-ui, sans-serif;
+}
+
+.page {
+  display: flex;
+  min-height: 160vh;
+  gap: 32px;
+  padding: 20px;
+}
+
+.left {
+  flex: 1;
+  position: sticky;
+  top: 20px;
+}
+
+.right {
+  flex: 1;
+}
+
+canvas { width: 100%; height: 420px; }
+
+.spacer { height: 60vh; }
+
+.controls {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: 0.4s ease;
+}
+
+.controls.visible { opacity:1; transform:translateY(0); }
+
+label {
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  margin-top:12px;
+}
+
+input { width:100%; }
+
+@media(max-width:900px){
+  .page { flex-direction:column; }
+  .left { position:static; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+  <div class="left">
+    <canvas id="canvas" width="600" height="400"></canvas>
+  </div>
+
+  <div class="right">
+    <div class="spacer"></div>
+    <div id="controls" class="controls">
+      <label>Min Threshold <span id="minVal">40</span></label>
+      <input id="min" type="range" min="0" max="255" value="40">
+
+      <label>Max Threshold <span id="maxVal">120</span></label>
+      <input id="max" type="range" min="0" max="255" value="120">
+
+      <label>Blur <span id="blurVal">1.2</span></label>
+      <input id="blur" type="range" min="0" max="5" step="0.1" value="1.2">
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== PUT YOUR IMAGE URL HERE ======
+const IMAGE_URL = "https://raw.githubusercontent.com/mfarahp14/mofarahpages/main/AFP28051.jpg";
+
+// Canvas
+const c = document.getElementById("canvas");
+const ctx = c.getContext("2d");
+const W = c.width, H = c.height;
+
+let original, edges;
+
+// Load Image
+const img = new Image();
+img.crossOrigin = "anonymous";
+img.onload = () => draw(img);
+img.src = IMAGE_URL;
+
+function draw(img){
+  const scale = Math.min(W/img.width,H/img.height);
+  const sw = img.width*scale;
+  const sh = img.height*scale;
+  const ox = (W-sw)/2;
+  const oy = (H-sh)/2;
+  ctx.drawImage(img,ox,oy,sw,sh);
+  original = ctx.getImageData(0,0,W,H);
+  computeEdges();
+}
+
+// Edge Functions
+function computeEdges(){
+  const gray = toGray(original);
+  const smooth = blurGray(gray, +blur.value);
+  const grad = sobel(smooth);
+  edges = threshold(nonMax(grad), +min.value, +max.value);
+}
+
+function toGray(img){
+  const g = new Float32Array(W*H);
+  for(let i=0;i<img.data.length;i+=4)
+    g[i/4] = 0.299*img.data[i]+0.587*img.data[i+1]+0.114*img.data[i+2];
+  return g;
+}
+
+function blurGray(data,r){
+  if(r<=0) return data;
+  const rad=Math.round(r), out=new Float32Array(W*H);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    let s=0,c=0;
+    for(let dy=-rad;dy<=rad;dy++)for(let dx=-rad;dx<=rad;dx++){
+      const nx=x+dx, ny=y+dy;
+      if(nx>=0&&ny>=0&&nx<W&&ny<H){s+=data[ny*W+nx];c++;}
+    }
+    out[y*W+x]=s/c;
+  }
+  return out;
+}
+
+function sobel(g){
+  const out=Array(W*H);
+  const Sx=[[-1,0,1],[-2,0,2],[-1,0,1]];
+  const Sy=[[-1,-2,-1],[0,0,0],[1,2,1]];
+  for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+    let gx=0,gy=0;
+    for(let ky=-1;ky<=1;ky++)for(let kx=-1;kx<=1;kx++){
+      const v=g[(y+ky)*W+x+kx];
+      gx+=v*Sx[ky+1][kx+1];
+      gy+=v*Sy[ky+1][kx+1];
+    }
+    out[y*W+x]={mag:Math.hypot(gx,gy),ang:Math.atan2(gy,gx)};
+  }
+  return out;
+}
+
+function nonMax(g){
+  const out=new Float32Array(W*H);
+  for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+    const i=y*W+x;
+    const a=(g[i].ang*180/Math.PI+180)%180;
+    const m=g[i].mag;
+    let n1,n2;
+    if(a<22.5||a>=157.5){n1=g[i-1]?.mag;n2=g[i+1]?.mag;}
+    else if(a<67.5){n1=g[i-W+1]?.mag;n2=g[i+W-1]?.mag;}
+    else if(a<112.5){n1=g[i-W]?.mag;n2=g[i+W]?.mag;}
+    else {n1=g[i-W-1]?.mag;n2=g[i+W+1]?.mag;}
+    out[i]=(m>=n1&&m>=n2)?m:0;
+  }
+  return out;
+}
+
+function threshold(data,minT,maxT){
+  const img=new ImageData(W,H);
+  for(let i=0;i<data.length;i++){
+    const v=data[i]>=maxT?255:(data[i]>=minT?120:0);
+    img.data[i*4]=img.data[i*4+1]=img.data[i*4+2]=v;
+    img.data[i*4+3]=255;
+  }
+  return img;
+}
+
+// Scroll blend
+window.addEventListener("scroll",()=>{
+  const max=document.body.scrollHeight-innerHeight;
+  const p=Math.min(1,scrollY/max);
+  blend(p);
+  if(innerHeight+scrollY>document.body.scrollHeight-200)
+    controls.classList.add("visible");
+});
+
+function blend(p){
+  if(!edges) return;
+  const m=ctx.createImageData(W,H);
+  for(let i=0;i<m.data.length;i+=4){
+    m.data[i]   = original.data[i]*(1-p)+edges.data[i]*p;
+    m.data[i+1] = original.data[i+1]*(1-p)+edges.data[i+1]*p;
+    m.data[i+2] = original.data[i+2]*(1-p)+edges.data[i+2]*p;
+    m.data[i+3] = 255;
+  }
+  ctx.putImageData(m,0,0);
+}
+
+// Controls
+const min=document.getElementById("min");
+const max=document.getElementById("max");
+const blur=document.getElementById("blur");
+min.oninput=()=>{minVal.textContent=min.value;computeEdges();}
+max.oninput=()=>{maxVal.textContent=max.value;computeEdges();}
+blur.oninput=()=>{blurVal.textContent=blur.value;computeEdges();}
+</script>
+
+</body>
+</html>
