@@ -3,45 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <title>Mohammed Farah – Hover Name</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #0f172a;
+      background: transparent; /* 🔹 fully transparent for Google Sites */
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: inherit; /* follow parent text color in Google Sites */
     }
+
     .hover-zone {
       padding: 24px 32px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+      background: transparent;       /* 🔹 no background */
+      border: none;                  /* 🔹 no border */
+      box-shadow: none;              /* 🔹 no shadow */
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
+
     .cursor-reveal {
-      font-family: monospace;
-      font-size: 28px;
-      letter-spacing: 0.1em;
-      color: #e5e7eb;
-      white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 32px;
+      letter-spacing: 0.08em;
+      color: currentColor; /* 🔹 inherits color from parent (Google Sites) */
     }
+
     .cursor {
-      width: 2px;
-      height: 1em;
-      background: #e5e7eb;
+      width: 3px;
+      height: 32px;
+      background: currentColor; /* 🔹 blinking bar uses same color */
       display: inline-block;
-      vertical-align: bottom;
-      margin-left: 3px;
-      animation: blink 1s infinite;
+      margin-left: 2px;
+      animation: blink 1s steps(1) infinite;
     }
+
     @keyframes blink {
-      50% { opacity: 0; }
+      0%, 50% { opacity: 1; }
+      50.01%, 100% { opacity: 0; }
     }
   </style>
 </head>
+
 <body>
   <div class="hover-zone" id="hoverZone">
     <div class="cursor-reveal">
@@ -50,41 +72,32 @@
   </div>
 
   <script>
+    // Text to reveal
     const text = "MOHAMMED FARAH";
     const out = document.getElementById("name");
     const zone = document.getElementById("hoverZone");
-    let i = 0;
-    let typingInterval = null;
-    let deletingInterval = null;
 
-    function startTyping() {
+    let i = 0;
+    let typingInterval;
+    let deletingInterval;
+
+    zone.addEventListener("mouseenter", () => {
       clearInterval(deletingInterval);
-      clearInterval(typingInterval);
       typingInterval = setInterval(() => {
         if (i < text.length) {
-          i++;
-          out.textContent = text.slice(0, i);
-        } else {
-          clearInterval(typingInterval);
+          out.textContent = text.slice(0, ++i);
         }
       }, 90);
-    }
+    });
 
-    function startDeleting() {
+    zone.addEventListener("mouseleave", () => {
       clearInterval(typingInterval);
-      clearInterval(deletingInterval);
       deletingInterval = setInterval(() => {
         if (i > 0) {
-          i--;
-          out.textContent = text.slice(0, i);
-        } else {
-          clearInterval(deletingInterval);
+          out.textContent = text.slice(0, --i);
         }
       }, 60);
-    }
-
-    zone.addEventListener("mouseenter", startTyping);
-    zone.addEventListener("mouseleave", startDeleting);
+    });
   </script>
 </body>
 </html>
