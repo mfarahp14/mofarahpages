@@ -1,61 +1,103 @@
-<script>
-/* === AUTOPLAY NAME, CONTROLLED STYLES === */
-const text = "MOHAMMED FARAH";
-const nameEl = document.getElementById("name");
-const cursorEl = document.querySelector(".cursor");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mohammed Farah | E-Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-// Typing state
-let i = 0;
-let direction = 1; // 1 = typing, -1 = deleting
-let styleIndex = 0;
+  <!-- Google Font (optional) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-// Subtle preset styles (all still clean + technical)
-const stylePresets = [
-  { letterSpacing: "0.10em", fontWeight: "400", opacity: 0.9 },
-  { letterSpacing: "0.18em", fontWeight: "500", opacity: 1 },
-  { letterSpacing: "0.14em", fontWeight: "600", opacity: 0.95 }
-];
+  <link rel="stylesheet" href="style.css" />
 
-function applyStyle() {
-  const s = stylePresets[styleIndex];
-  Object.assign(nameEl.style, s);
-}
+  <!-- Your JS, with defer so DOM is ready when it runs -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="logo">MF</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-// Start with first style
-applyStyle();
+  <!-- HERO SECTION with your name autoplay -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="name-line">
+        <span id="name"></span>
+        <span class="cursor"></span>
+      </div>
+      <p class="tagline">Electrical & Computer Engineering @ Duke • Builder of smart systems & tools</p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn primary">View Projects</a>
+        <a href="#about" class="btn ghost">About Me</a>
+      </div>
+    </div>
+  </section>
 
-function tick() {
-  // Update visible text
-  nameEl.textContent = text.slice(0, i);
+  <main>
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2>About Me</h2>
+      <p>
+        I’m an engineering student interested in embedded systems, robotics, and practical tools
+        that solve real-world problems. I love combining hardware with clean, well-structured software.
+      </p>
+    </section>
 
-  if (direction === 1) {
-    // Typing forward
-    if (i < text.length) {
-      i++;
-    } else {
-      // Full name shown → small pause → start deleting
-      direction = -1;
-      setTimeout(tick, 800);
-      return;
-    }
-  } else {
-    // Deleting
-    if (i > 0) {
-      i--;
-    } else {
-      // Fully deleted → switch style → start typing again
-      direction = 1;
-      styleIndex = (styleIndex + 1) % stylePresets.length;
-      applyStyle();
-      setTimeout(tick, 300);
-      return;
-    }
-  }
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>HemoSave Device</h3>
+          <p>
+            Co-founded a device to measure blood loss and detect postpartum hemorrhage with high accuracy,
+            designed for low-resource settings.
+          </p>
+          <ul>
+            <li>95%+ correlation to premium devices</li>
+            <li>&lt;$500 bill of materials</li>
+            <li>Rapid, easy-to-use workflow</li>
+          </ul>
+        </article>
 
-  const speed = direction === 1 ? 90 : 60; // typing vs deleting speed
-  setTimeout(tick, speed);
-}
+        <article class="card">
+          <h3>Robotics / ROS Project</h3>
+          <p>
+            Integrated perception and control pipelines using ROS, image processing, and custom scripts
+            for real-time robot behavior.
+          </p>
+        </article>
 
-// Kick it off
-tick();
-</script>
+        <article class="card">
+          <h3>Personal Tools & Experiments</h3>
+          <p>
+            Small web tools, simulations, and scripts that help automate everyday tasks and visualize ideas.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <p>Open to internships, collaborations, and cool technical projects.</p>
+      <ul class="contact-list">
+        <li><strong>Email:</strong> <a href="mailto:mohamedfarahp14@gmail.com">mohamedfarahp14@gmail.com</a></li>
+        <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/mohammed-a-farah" target="_blank">linkedin.com/in/mohammed-a-farah</a></li>
+        <li><strong>GitHub:</strong> <a href="#" target="_blank">github.com/your-username</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> Mohammed Farah. All rights reserved.
+  </footer>
+</body>
+</html>
