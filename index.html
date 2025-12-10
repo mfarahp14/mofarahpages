@@ -1,595 +1,316 @@
-/* RESET + BASE */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-:root {
-  --bg: #0a0605;
-  --bg-alt: #141010;
-  --accent: #c6763c;        /* coffee / caramel */
-  --accent-soft: rgba(198, 118, 60, 0.18);
-  --card-bg: #1f1511;       /* dark espresso */
-  --card-bg-soft: #241713;
-  --card-edge: rgba(120, 84, 60, 0.7);
-  --text-main: #f4ece4;     /* paper / foam */
-  --text-sub: #c0aa96;
-  --chip-bg: rgba(39, 24, 19, 0.9);
-  --card-radius: 1.4rem;
-}
-
-body {
-  margin: 0;
-  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background:
-    radial-gradient(circle at top left, #3a2417 0, transparent 55%),
-    radial-gradient(circle at bottom right, #120c0a 0, #050303 60%);
-  color: var(--text-main);
-  line-height: 1.6;
-}
-
-/* NAV */
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  backdrop-filter: blur(18px);
-  background: linear-gradient(
-    to bottom,
-    rgba(10, 6, 5, 0.98),
-    rgba(10, 6, 5, 0.9),
-    transparent
-  );
-  border-bottom: 1px solid rgba(83, 57, 40, 0.55);
-}
-
-.nav-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0.75rem 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  text-decoration: none;
-  color: var(--text-main);
-}
-
-.logo-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid rgba(231, 207, 182, 0.9);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
-}
-
-.logo-text {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  opacity: 0.9;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #e1d5c5;
-  font-size: 0.85rem;
-  opacity: 0.82;
-  transition: opacity 0.16s ease, transform 0.16s ease;
-}
-
-.nav-links a:hover {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-/* Resume button in nav */
-.nav-resume {
-  border-radius: 999px;
-  padding: 0.4rem 0.95rem;
-  border: 1px solid rgba(198, 118, 60, 0.7);
-  font-size: 0.8rem;
-  background: radial-gradient(circle at top left, #c6763c, #a75a2b);
-  color: #130c08 !important;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8);
-}
-
-/* HERO */
-.hero {
-  padding: 4.2rem 1.5rem 3.2rem;
-}
-
-.hero-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
-  gap: 3rem;
-  align-items: center;
-}
-
-.hero-eyebrow {
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-sub);
-  margin-bottom: 0.6rem;
-}
-
-.name-line {
-  font-size: clamp(1.9rem, 3.1vw, 2.6rem);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-#name {
-  white-space: nowrap;
-}
-
-/* cursor */
-.cursor {
-  width: 2px;
-  height: 1.2em;
-  background: var(--accent);
-  display: inline-block;
-  animation: blink 0.9s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
-}
-
-.hero-tagline {
-  margin-top: 1.2rem;
-  font-size: 0.97rem;
-  max-width: 530px;
-  color: var(--text-sub);
-}
-
-.hero-meta {
-  margin-top: 1.5rem;
-  display: grid;
-  gap: 0.7rem;
-  font-size: 0.84rem;
-}
-
-.meta-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.meta-label {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.72rem;
-  color: #8a7361;
-}
-
-.meta-value {
-  color: var(--text-main);
-}
-
-.hero-actions {
-  margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
-}
-
-/* Buttons */
-.btn {
-  border-radius: 999px;
-  padding: 0.7rem 1.35rem;
-  font-size: 0.87rem;
-  border: 1px solid rgba(120, 84, 60, 0.75);
-  text-decoration: none;
-  color: var(--text-main);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-  background: var(--chip-bg);
-}
-
-.btn.primary {
-  background: radial-gradient(circle at top left, #d4894c, #a4552b);
-  border-color: rgba(220, 162, 110, 0.9);
-  color: #140b07;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
-}
-
-.btn.primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.95);
-}
-
-.btn.ghost:hover {
-  transform: translateY(-2px);
-  background: #2a1a13;
-}
-
-/* Hero right: mug / ambience */
-.hero-right {
-  position: relative;
-  min-height: 260px;
-}
-
-.hero-mug {
-  width: 210px;
-  height: 210px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 20%, #f7eee3 0, #e2cfb7 35%, #c2925c 70%, #2a1810 90%),
-    radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.25), transparent 65%);
-  margin-left: auto;
-  box-shadow:
-    0 28px 70px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(255, 255, 255, 0.04);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-mug::after {
-  content: "";
-  position: absolute;
-  inset: 10%;
-  border-radius: 50%;
-  border: 2px solid rgba(246, 233, 214, 0.6);
-}
-
-.hero-note {
-  margin-top: 1.2rem;
-  margin-left: auto;
-  width: min(260px, 100%);
-  background: rgba(21, 12, 9, 0.96);
-  border-radius: 1.1rem;
-  padding: 0.9rem 1rem 0.85rem;
-  border: 1px solid rgba(120, 84, 60, 0.7);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.88);
-}
-
-.hero-note-title {
-  margin: 0;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: #b7977d;
-}
-
-.hero-note-text {
-  margin: 0.4rem 0 0;
-  font-size: 0.86rem;
-  color: var(--text-sub);
-}
-
-/* SECTION COMMON */
-.section {
-  padding: 3.1rem 1.5rem;
-}
-
-.section-header {
-  max-width: 1080px;
-  margin: 0 auto 1.6rem;
-}
-
-.section-header h2 {
-  margin: 0 0 0.3rem;
-  font-size: 1.35rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-}
-
-.section-subtitle {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-sub);
-  max-width: 600px;
-}
-
-/* ABOUT */
-.about-layout {
-  max-width: 1080px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-  gap: 2rem;
-  align-items: center;
-}
-
-.about-photo-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.about-photo {
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(246, 230, 210, 0.9);
-  box-shadow:
-    0 18px 48px rgba(0, 0, 0, 0.85),
-    0 0 0 10px rgba(36, 22, 16, 0.9);
-}
-
-.about-text {
-  font-size: 0.95rem;
-  color: var(--text-sub);
-}
-
-.about-text ul {
-  padding-left: 1.2rem;
-}
-
-/* PROJECTS */
-.project-card-grid {
-  max-width: 1080px;
-  margin: 0 auto 1.8rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
-}
-
-.project-card-tile {
-  border-radius: 1.2rem;
-  border: 1px solid rgba(120, 84, 60, 0.8);
-  background: linear-gradient(145deg, #251713, #1a100d);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
-  padding: 0.95rem 1rem 0.9rem;
-  text-align: left;
-  color: var(--text-main);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
-}
-
-.project-card-tile:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.95);
-  border-color: rgba(216, 151, 100, 0.9);
-}
-
-.project-card-title {
-  font-size: 1rem;
-}
-
-.project-card-tag {
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #c9b09a;
-  margin-top: 0.4rem;
-}
-
-/* Bounce animation when clicked */
-.tile-bounce {
-  animation: tile-bounce 0.4s ease;
-}
-
-@keyframes tile-bounce {
-  0%   { transform: translateY(0); }
-  30%  { transform: translateY(-7px); }
-  60%  { transform: translateY(3px); }
-  100% { transform: translateY(0); }
-}
-
-/* Project details cards */
-.project-details {
-  max-width: 1080px;
-  margin: 0 auto;
-  display: grid;
-  gap: 1.4rem;
-}
-
-.project-detail-card {
-  background: radial-gradient(circle at top left, #2b1913, #170f0c);
-  border-radius: var(--card-radius);
-  border: 1px solid rgba(114, 79, 56, 0.9);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.95);
-  padding: 1.3rem 1.4rem 1.1rem;
-}
-
-.project-detail-card h3 {
-  margin: 0 0 0.5rem;
-}
-
-.project-detail-label {
-  margin: 0;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: #b59378;
-  margin-bottom: 0.4rem;
-}
-
-.project-detail-card p {
-  font-size: 0.9rem;
-  color: var(--text-sub);
-}
-
-.project-bullets {
-  margin: 0.7rem 0 0.4rem;
-  padding-left: 1.2rem;
-  font-size: 0.88rem;
-  color: var(--text-sub);
-}
-
-.project-status {
-  font-size: 0.82rem;
-  color: #e4c09c;
-}
-
-/* SKILLS */
-.skills-grid {
-  max-width: 1080px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.2rem;
-}
-
-.skills-card {
-  background: var(--card-bg);
-  border-radius: var(--card-radius);
-  border: 1px solid rgba(114, 79, 56, 0.8);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9);
-  padding: 1.1rem 1.2rem 1rem;
-}
-
-.skills-card h3 {
-  margin: 0 0 0.7rem;
-  font-size: 1rem;
-}
-
-.pill-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.pill {
-  padding: 0.24rem 0.65rem;
-  border-radius: 999px;
-  background: var(--chip-bg);
-  border: 1px solid rgba(126, 89, 63, 0.7);
-  font-size: 0.78rem;
-  color: var(--text-main);
-}
-
-/* CONTACT */
-.contact-layout {
-  max-width: 1080px;
-  margin: 0 auto;
-}
-
-.contact-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border-radius: var(--card-radius);
-  border: 1px solid rgba(114, 79, 56, 0.8);
-  background: var(--card-bg);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.95);
-}
-
-.contact-list li {
-  padding: 0.9rem 1.3rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-  align-items: baseline;
-  border-bottom: 1px solid #261510;
-}
-
-.contact-list li:last-child {
-  border-bottom: none;
-}
-
-.contact-label {
-  min-width: 80px;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: #9a7f68;
-}
-
-.contact-list a {
-  color: #f2c187;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.contact-list a:hover {
-  text-decoration: underline;
-}
-
-/* FOOTER */
-.footer {
-  padding: 1.6rem 1.4rem 2rem;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #947c67;
-  border-top: 1px solid #261510;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.footer-dot {
-  font-size: 0.7rem;
-}
-
-/* REVEAL ON SCROLL */
-.reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* RESPONSIVE */
-@media (max-width: 880px) {
-  .hero-inner {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .hero-right {
-    order: -1;
-    margin-bottom: 1.2rem;
-  }
-
-  .nav-links {
-    gap: 0.7rem;
-  }
-
-  .nav-links a {
-    font-size: 0.78rem;
-  }
-
-  .nav-resume {
-    display: none; /* if nav gets too crowded on small screens */
-  }
-
-  .about-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .hero {
-    padding-top: 3.2rem;
-  }
-
-  .section {
-    padding-inline: 1.2rem;
-  }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mohammed Farah | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- TOP NAV -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="#home" class="logo">
+        <span class="logo-mark">MF</span>
+        <span class="logo-text">Mohammed Farah</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+        <a
+          href="assets/Mohammed_Farah_Resume.pdf"
+          class="btn nav-resume"
+          target="_blank"
+        >
+          Download Resume
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HOME / HERO -->
+  <section id="home" class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="hero-eyebrow">Student • Builder • Product-minded Engineer</p>
+
+        <div class="name-line">
+          <span id="name"></span>
+          <span class="cursor"></span>
+        </div>
+
+        <p class="hero-tagline">
+          I’m an electrical & computer engineering student who loves building things
+          that move, sense, and actually solve problems — from medical devices and
+          robotics to libraries and tools.
+        </p>
+
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="meta-label">What I do</span>
+            <span class="meta-value">Robotics • Product Design • Systems</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Experience</span>
+            <span class="meta-value">Startup co-founder & student engineer</span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn primary">View Projects</a>
+          <a href="#about" class="btn ghost">About Me</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-mug"></div>
+        <div class="hero-note">
+          <p class="hero-note-title">Current focus</p>
+          <p class="hero-note-text">
+            Closing gaps in how we measure, control, and reason about real-world systems.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- ABOUT -->
+    <section id="about" class="section reveal">
+      <div class="section-header">
+        <h2>About</h2>
+        <p class="section-subtitle">
+          A student engineer with one foot in robotics and the other in product design.
+        </p>
+      </div>
+
+      <div class="about-layout">
+        <div class="about-photo-wrap">
+          <!-- UPDATE src TO MATCH YOUR FILE IN /assets -->
+          <img
+            src="assets/my_picture.jpg"
+            alt="Portrait of Mohammed Farah"
+            class="about-photo"
+          />
+        </div>
+
+        <div class="about-text">
+          <p>
+            I’m Mohammed, an electrical & computer engineering student who enjoys
+            working close to the hardware: robots, sensors, and the software that
+            ties everything together.
+          </p>
+          <p>
+            I’ve co-founded a startup working on a device to measure postpartum blood
+            loss more accurately, and I’ve built robotics projects where I own both
+            the technical implementation and the product thinking: what the system
+            should actually do, and why it matters.
+          </p>
+          <p>
+            Right now, I’m focused on:
+          </p>
+          <ul>
+            <li>Designing HemoSave around real clinical gaps and workflows.</li>
+            <li>Building robots that feel purposeful, not just “demoable”.</li>
+            <li>Developing a kinematics library that makes robotics math less painful to use.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section reveal">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <p class="section-subtitle">
+          Ongoing work that mixes robotics, product design, and systems thinking.
+        </p>
+      </div>
+
+      <!-- Project cards (click → bounce + scroll to details) -->
+      <div class="project-card-grid">
+        <button class="project-card-tile" data-target="hemosave">
+          <span class="project-card-title">HemoSave</span>
+          <span class="project-card-tag">Healthtech • Startup</span>
+        </button>
+
+        <button class="project-card-tile" data-target="santabot">
+          <span class="project-card-title">SantaBot</span>
+          <span class="project-card-tag">Robotics • Complete</span>
+        </button>
+
+        <button class="project-card-tile" data-target="kinematics">
+          <span class="project-card-title">Kinematics Library</span>
+          <span class="project-card-tag">Robotics Tools • WIP</span>
+        </button>
+      </div>
+
+      <!-- Project details -->
+      <div class="project-details">
+        <!-- HEMOSAVE -->
+        <article id="hemosave" class="project-detail-card">
+          <h3>HemoSave Device</h3>
+          <p class="project-detail-label">About this project</p>
+          <p>
+            Postpartum hemorrhage kills thousands of mothers every year, especially
+            in low-resource settings. Existing approaches either rely on rough visual
+            estimation, which can be wildly inaccurate, or on premium devices that are
+            too expensive and slow to deploy at scale.
+          </p>
+          <p>
+            HemoSave is an ongoing project to close that gap: a device designed to
+            measure blood loss quickly and affordably, targeting a correlation with
+            premium devices while being feasible for hospitals that can’t spend thousands
+            per unit.
+          </p>
+
+          <ul class="project-bullets">
+            <li>Co-founded the project and helped define the core product requirements.</li>
+            <li>Ran conversations with clinicians to understand workflow constraints and real failure modes.</li>
+            <li>Focused on making the system usable in noisy, resource-constrained environments.</li>
+          </ul>
+
+          <p class="project-status">Status: Active • Ongoing validation and iteration.</p>
+        </article>
+
+        <!-- SANTABOT -->
+        <article id="santabot" class="project-detail-card">
+          <h3>SantaBot</h3>
+          <p class="project-detail-label">About this project</p>
+          <p>
+            SantaBot is a playful robotics project built around a simple idea:
+            can we design a robot that feels delightful but still uses the same
+            core systems we’d rely on for more serious work?
+          </p>
+          <p>
+            It combines motion, sensing, and behavior in a compact package —
+            a way to practice robotics fundamentals while shipping something
+            that actually makes people smile.
+          </p>
+
+          <ul class="project-bullets">
+            <li>Implemented behaviors that react to the environment in real time.</li>
+            <li>Used this project as a sandbox to test control ideas and hardware integrations.</li>
+          </ul>
+
+          <p class="project-status">Status: Complete for now • Future upgrades possible.</p>
+        </article>
+
+        <!-- KINEMATICS LIBRARY -->
+        <article id="kinematics" class="project-detail-card">
+          <h3>Kinematics Library</h3>
+          <p class="project-detail-label">About this project</p>
+          <p>
+            A lot of robotics students run into the same wall: the math behind
+            kinematics is already hard, and the libraries they use can feel opaque,
+            under-documented, or too tied to specific hardware.
+          </p>
+          <p>
+            This kinematics library is my attempt to target that gap — a set of
+            tools that make it easier to move from equations on paper to something
+            you can actually run in a robot or simulation.
+          </p>
+
+          <ul class="project-bullets">
+            <li>Focus on clarity of API and documentation, not just performance.</li>
+            <li>Designed to be modular so specific pieces can be reused in different projects.</li>
+            <li>Experimental space to encode my own understanding of robot motion in code.</li>
+          </ul>
+
+          <p class="project-status">Status: Active • Being expanded as I build more robots.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section reveal">
+      <div class="section-header">
+        <h2>Skills</h2>
+        <p class="section-subtitle">
+          The tools I reach for when turning ideas into working systems.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skills-card">
+          <h3>Languages</h3>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">C/C++</span>
+            <span class="pill">Java</span>
+            <span class="pill">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="skills-card">
+          <h3>Robotics & Systems</h3>
+          <div class="pill-row">
+            <span class="pill">ROS</span>
+            <span class="pill">OpenCV</span>
+            <span class="pill">Kinematics</span>
+            <span class="pill">Embedded</span>
+          </div>
+        </div>
+
+        <div class="skills-card">
+          <h3>Product & Tools</h3>
+          <div class="pill-row">
+            <span class="pill">Product Design</span>
+            <span class="pill">Rapid Prototyping</span>
+            <span class="pill">Git & GitHub</span>
+            <span class="pill">Docker</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section reveal">
+      <div class="section-header">
+        <h2>Contact</h2>
+        <p class="section-subtitle">
+          I’m always interested in projects that mix hardware, software, and real users.
+        </p>
+      </div>
+
+      <div class="contact-layout">
+        <ul class="contact-list">
+          <li>
+            <span class="contact-label">Email</span>
+            <a href="mailto:mohamedfarahp14@gmail.com">mohamedfarahp14@gmail.com</a>
+          </li>
+          <li>
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://linkedin.com/in/mohammed-a-farah" target="_blank">
+              linkedin.com/in/mohammed-a-farah
+            </a>
+          </li>
+          <li>
+            <span class="contact-label">GitHub</span>
+            <a href="https://github.com/mfarahp14" target="_blank">
+              github.com/mfarahp14
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Mohammed Farah.</span>
+    <span class="footer-dot">•</span>
+    <span>Built on GitHub Pages.</span>
+  </footer>
+</body>
+</html>
