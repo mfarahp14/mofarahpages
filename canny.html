@@ -2,211 +2,472 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Canny Image Demo</title>
+<title>Canny Edge – Sticky Image</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { height:100%; }
+:root {
+    --accent: #2563eb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border: #d1d5db;
+}
 
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Layout */
 body {
-  background: transparent;
-  font-family: system-ui, sans-serif;
+    background: transparent;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 200vh;
 }
 
-.page {
-  display: flex;
-  min-height: 160vh;
-  gap: 32px;
-  padding: 20px;
+.page-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    padding: 24px 16px;
 }
 
-.left {
-  flex: 1;
-  position: sticky;
-  top: 20px;
+/* LEFT: STICKY IMAGE */
+.left-column {
+    flex: 0 0 45%;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
 }
 
-.right {
-  flex: 1;
+.image-component {
+    position: relative;
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+    border-radius: 16px;
 }
 
-canvas { width: 100%; height: 420px; }
-
-.spacer { height: 60vh; }
-
-.controls {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: 0.4s ease;
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
-.controls.visible { opacity:1; transform:translateY(0); }
-
-label {
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  margin-top:12px;
+/* Upload Overlay */
+.upload-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed var(--border);
+    cursor: pointer;
+    background: rgba(255,255,255,0.7);
+    transition: opacity 0.2s ease;
 }
 
-input { width:100%; }
+.upload-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
 
-@media(max-width:900px){
-  .page { flex-direction:column; }
-  .left { position:static; }
+.upload-overlay h3 {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.upload-overlay p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Status + progress */
+.image-status {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.image-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.progress-indicator {
+    height: 3px;
+    background: var(--accent);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+/* RIGHT COLUMN */
+.right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 160vh;
+}
+
+/* Extra space so scroll actually happens */
+.spacer {
+    height: 40vh;
+}
+
+/* Controls */
+.controls-component {
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.controls-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.control-group {
+    margin-bottom: 1rem;
+}
+
+.control-label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.control-label span:last-child {
+    color: var(--text-secondary);
+}
+
+.slider {
+    width: 100%;
+}
+
+.stats {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.description {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Fade-in on scroll near bottom */
+.controls-wrapper {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.4s ease;
+}
+
+.controls-wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    .page-layout {
+        flex-direction: column;
+    }
+    .left-column {
+        position: static; /* disable sticky on small screens */
+        height: auto;
+    }
+    .image-component {
+        max-height: 520px;
+    }
+    .spacer {
+        height: 20vh;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="page">
-  <div class="left">
-    <canvas id="canvas" width="600" height="400"></canvas>
-  </div>
+<div class="page-layout">
 
-  <div class="right">
-    <div class="spacer"></div>
-    <div id="controls" class="controls">
-      <label>Min Threshold <span id="minVal">40</span></label>
-      <input id="min" type="range" min="0" max="255" value="40">
+    <!-- LEFT: STICKY IMAGE -->
+    <div class="left-column">
+        <div class="image-component">
+            <canvas id="displayCanvas" width="600" height="400"></canvas>
 
-      <label>Max Threshold <span id="maxVal">120</span></label>
-      <input id="max" type="range" min="0" max="255" value="120">
+            <div class="upload-overlay" id="uploadOverlay">
+                <h3>Use your own image</h3>
+                <p>Click or drop an image (optional)</p>
+                <input type="file" id="fileInputLeft" hidden accept="image/*">
+            </div>
 
-      <label>Blur <span id="blurVal">1.2</span></label>
-      <input id="blur" type="range" min="0" max="5" step="0.1" value="1.2">
+            <div class="image-status">
+                <div class="image-label" id="imageLabel">Original</div>
+            </div>
+
+            <div class="progress-indicator" id="progressIndicator" style="width:0%"></div>
+        </div>
     </div>
-  </div>
+
+    <!-- RIGHT: CONTROLS & COPY -->
+    <div class="right-column">
+
+        <div class="spacer"></div>
+
+        <div id="controlsWrapper" class="controls-wrapper">
+            <div class="controls-component">
+
+                <div class="controls-title">Play with the edges</div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Min Threshold</span>
+                        <span id="minThresholdValue">50</span>
+                    </div>
+                    <input type="range" id="minThreshold" class="slider" min="0" max="255" value="50">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Max Threshold</span>
+                        <span id="maxThresholdValue">150</span>
+                    </div>
+                    <input type="range" id="maxThreshold" class="slider" min="0" max="255" value="150">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Blur Amount</span>
+                        <span id="blurValue">1.4</span>
+                    </div>
+                    <input type="range" id="gaussianBlur" class="slider" min="0" max="5" step="0.1" value="1.4">
+                </div>
+
+                <div class="stats">
+                    <div id="edgePixels">-- edges</div>
+                    <div id="edgeDensity">-- % edge density</div>
+                </div>
+
+                <div class="description">
+                    Scroll the page to morph from the original image to the edge map.
+                    The canvas on the left stays pinned so you always see the transformation.
+                    Adjust thresholds and blur to change how aggressive the edges are.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 <script>
-// ====== PUT YOUR IMAGE URL HERE ======
-const IMAGE_URL = "https://raw.githubusercontent.com/mfarahp14/mofarahpages/main/AFP28051.jpg";
+/* === CONFIG: put your starting image here === */
+const DEFAULT_IMAGE_URL = "https://mfarahp14.github.io/mofarahpages/assets/your-image.jpg"; 
+// replace with an actual image in your repo (e.g. assets/mohface.jpg)
 
-// Canvas
-const c = document.getElementById("canvas");
-const ctx = c.getContext("2d");
-const W = c.width, H = c.height;
+/* Simple canny-ish pipeline */
+class Canny {
+  constructor() {
+    this.c = document.getElementById("displayCanvas");
+    this.x = this.c.getContext("2d");
+    this.width = this.c.width;
+    this.height = this.c.height;
+    this.original = null;
+    this.edges = null;
 
-let original, edges;
+    this.min = 50;
+    this.max = 150;
+    this.blur = 1.4;
 
-// Load Image
-const img = new Image();
-img.crossOrigin = "anonymous";
-img.onload = () => draw(img);
-img.src = IMAGE_URL;
+    this.bindUpload();
+    this.loadDefaultImage();
+    window.addEventListener("scroll", () => this.updateTransition());
+  }
 
-function draw(img){
-  const scale = Math.min(W/img.width,H/img.height);
-  const sw = img.width*scale;
-  const sh = img.height*scale;
-  const ox = (W-sw)/2;
-  const oy = (H-sh)/2;
-  ctx.drawImage(img,ox,oy,sw,sh);
-  original = ctx.getImageData(0,0,W,H);
-  computeEdges();
-}
+  bindUpload() {
+    const input = document.getElementById("fileInputLeft");
+    const overlay = document.getElementById("uploadOverlay");
+    overlay.onclick = () => input.click();
+    overlay.ondragover = e => { e.preventDefault(); };
+    overlay.ondrop = e => {
+      e.preventDefault();
+      if (e.dataTransfer.files[0]) this.loadFromFile(e.dataTransfer.files[0]);
+    };
+    input.onchange = e => this.loadFromFile(e.target.files[0]);
+  }
 
-// Edge Functions
-function computeEdges(){
-  const gray = toGray(original);
-  const smooth = blurGray(gray, +blur.value);
-  const grad = sobel(smooth);
-  edges = threshold(nonMax(grad), +min.value, +max.value);
-}
+  loadDefaultImage() {
+    if (!DEFAULT_IMAGE_URL) return;
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      this.drawImageFit(img);
+      document.getElementById("uploadOverlay").classList.add("hidden");
+    };
+    img.src = DEFAULT_IMAGE_URL;
+  }
 
-function toGray(img){
-  const g = new Float32Array(W*H);
-  for(let i=0;i<img.data.length;i+=4)
-    g[i/4] = 0.299*img.data[i]+0.587*img.data[i+1]+0.114*img.data[i+2];
-  return g;
-}
+  loadFromFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        this.drawImageFit(img);
+        document.getElementById("uploadOverlay").classList.add("hidden");
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
 
-function blurGray(data,r){
-  if(r<=0) return data;
-  const rad=Math.round(r), out=new Float32Array(W*H);
-  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
-    let s=0,c=0;
-    for(let dy=-rad;dy<=rad;dy++)for(let dx=-rad;dx<=rad;dx++){
-      const nx=x+dx, ny=y+dy;
-      if(nx>=0&&ny>=0&&nx<W&&ny<H){s+=data[ny*W+nx];c++;}
+  drawImageFit(img) {
+    const cw = this.width, ch = this.height;
+    const scale = Math.min(cw / img.width, ch / img.height);
+    const sw = img.width * scale;
+    const sh = img.height * scale;
+    const ox = (cw - sw) / 2;
+    const oy = (ch - sh) / 2;
+
+    this.x.clearRect(0, 0, cw, ch);
+    this.x.fillStyle = "#f3f4f6";
+    this.x.fillRect(0, 0, cw, ch);
+    this.x.drawImage(img, ox, oy, sw, sh);
+
+    this.original = this.x.getImageData(0, 0, cw, ch);
+    this.runEdgeDetection();
+  }
+
+  runEdgeDetection() {
+    if (!this.original) return;
+    const w = this.width, h = this.height;
+    const src = this.original.data;
+    const gray = new Uint8Array(w * h);
+
+    // Grayscale
+    for (let i = 0; i < src.length; i += 4) {
+      gray[i / 4] = 0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2];
     }
-    out[y*W+x]=s/c;
-  }
-  return out;
-}
 
-function sobel(g){
-  const out=Array(W*H);
-  const Sx=[[-1,0,1],[-2,0,2],[-1,0,1]];
-  const Sy=[[-1,-2,-1],[0,0,0],[1,2,1]];
-  for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
-    let gx=0,gy=0;
-    for(let ky=-1;ky<=1;ky++)for(let kx=-1;kx<=1;kx++){
-      const v=g[(y+ky)*W+x+kx];
-      gx+=v*Sx[ky+1][kx+1];
-      gy+=v*Sy[ky+1][kx+1];
+    const blurred = this.blur > 0 ? this.blurGray(gray, w, h, this.blur) : gray;
+
+    // Threshold-based edge mask
+    const out = new ImageData(w, h);
+    let count = 0;
+    for (let i = 0; i < blurred.length; i++) {
+      const v = blurred[i];
+      const e = (v >= this.min && v <= this.max) ? 255 : 0;
+      out.data[i * 4] = e;
+      out.data[i * 4 + 1] = e;
+      out.data[i * 4 + 2] = e;
+      out.data[i * 4 + 3] = 255;
+      if (e) count++;
     }
-    out[y*W+x]={mag:Math.hypot(gx,gy),ang:Math.atan2(gy,gx)};
+
+    this.edges = out;
+
+    const total = w * h;
+    document.getElementById("edgePixels").textContent =
+      count.toLocaleString() + " edges";
+    document.getElementById("edgeDensity").textContent =
+      ((count / total) * 100).toFixed(1) + " % edge density";
+
+    this.updateTransition();
   }
-  return out;
+
+  blurGray(data, w, h, sigma) {
+    const r = Math.max(1, Math.round(sigma));
+    const result = new Uint8Array(w * h);
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        let sum = 0, cnt = 0;
+        for (let dy = -r; dy <= r; dy++) {
+          for (let dx = -r; dx <= r; dx++) {
+            const nx = x + dx, ny = y + dy;
+            if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+              sum += data[ny * w + nx];
+              cnt++;
+            }
+          }
+        }
+        result[y * w + x] = sum / cnt;
+      }
+    }
+    return result;
+  }
+
+  updateTransition() {
+    if (!this.original || !this.edges) return;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const p = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+
+    const mix = new ImageData(this.width, this.height);
+    const o = this.original.data;
+    const e = this.edges.data;
+    const m = mix.data;
+
+    for (let i = 0; i < m.length; i += 4) {
+      m[i]   = o[i]   * (1 - p) + e[i]   * p;
+      m[i+1] = o[i+1] * (1 - p) + e[i+1] * p;
+      m[i+2] = o[i+2] * (1 - p) + e[i+2] * p;
+      m[i+3] = 255;
+    }
+
+    document.getElementById("progressIndicator").style.width = (p * 100) + "%";
+    document.getElementById("imageLabel").textContent =
+      p < 0.1 ? "Original" : p > 0.9 ? "Edges" : Math.round(p * 100) + "%";
+
+    this.x.putImageData(mix, 0, 0);
+  }
 }
 
-function nonMax(g){
-  const out=new Float32Array(W*H);
-  for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
-    const i=y*W+x;
-    const a=(g[i].ang*180/Math.PI+180)%180;
-    const m=g[i].mag;
-    let n1,n2;
-    if(a<22.5||a>=157.5){n1=g[i-1]?.mag;n2=g[i+1]?.mag;}
-    else if(a<67.5){n1=g[i-W+1]?.mag;n2=g[i+W-1]?.mag;}
-    else if(a<112.5){n1=g[i-W]?.mag;n2=g[i+W]?.mag;}
-    else {n1=g[i-W-1]?.mag;n2=g[i+W+1]?.mag;}
-    out[i]=(m>=n1&&m>=n2)?m:0;
-  }
-  return out;
-}
+const canny = new Canny();
 
-function threshold(data,minT,maxT){
-  const img=new ImageData(W,H);
-  for(let i=0;i<data.length;i++){
-    const v=data[i]>=maxT?255:(data[i]>=minT?120:0);
-    img.data[i*4]=img.data[i*4+1]=img.data[i*4+2]=v;
-    img.data[i*4+3]=255;
-  }
-  return img;
-}
+/* Sliders */
+document.getElementById("minThreshold").oninput = e => {
+  canny.min = parseFloat(e.target.value);
+  document.getElementById("minThresholdValue").textContent = e.target.value;
+  canny.runEdgeDetection();
+};
 
-// Scroll blend
-window.addEventListener("scroll",()=>{
-  const max=document.body.scrollHeight-innerHeight;
-  const p=Math.min(1,scrollY/max);
-  blend(p);
-  if(innerHeight+scrollY>document.body.scrollHeight-200)
+document.getElementById("maxThreshold").oninput = e => {
+  canny.max = parseFloat(e.target.value);
+  document.getElementById("maxThresholdValue").textContent = e.target.value;
+  canny.runEdgeDetection();
+};
+
+document.getElementById("gaussianBlur").oninput = e => {
+  canny.blur = parseFloat(e.target.value);
+  document.getElementById("blurValue").textContent = e.target.value;
+  canny.runEdgeDetection();
+};
+
+/* Reveal controls near bottom of scroll */
+const controls = document.getElementById("controlsWrapper");
+window.addEventListener("scroll", () => {
+  if (window.scrollY + window.innerHeight > document.body.scrollHeight - 150) {
     controls.classList.add("visible");
-});
-
-function blend(p){
-  if(!edges) return;
-  const m=ctx.createImageData(W,H);
-  for(let i=0;i<m.data.length;i+=4){
-    m.data[i]   = original.data[i]*(1-p)+edges.data[i]*p;
-    m.data[i+1] = original.data[i+1]*(1-p)+edges.data[i+1]*p;
-    m.data[i+2] = original.data[i+2]*(1-p)+edges.data[i+2]*p;
-    m.data[i+3] = 255;
   }
-  ctx.putImageData(m,0,0);
-}
-
-// Controls
-const min=document.getElementById("min");
-const max=document.getElementById("max");
-const blur=document.getElementById("blur");
-min.oninput=()=>{minVal.textContent=min.value;computeEdges();}
-max.oninput=()=>{maxVal.textContent=max.value;computeEdges();}
-blur.oninput=()=>{blurVal.textContent=blur.value;computeEdges();}
+});
 </script>
 
 </body>
