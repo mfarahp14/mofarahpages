@@ -1,135 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Mohammed Farah – Autoplay Name (Controlled Design)</title>
+<script>
+/* === AUTOPLAY NAME, CONTROLLED STYLES === */
+const text = "MOHAMMED FARAH";
+const nameEl = document.getElementById("name");
+const cursorEl = document.querySelector(".cursor");
 
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+// Typing state
+let i = 0;
+let direction = 1; // 1 = typing, -1 = deleting
+let styleIndex = 0;
 
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+// Subtle preset styles (all still clean + technical)
+const stylePresets = [
+  { letterSpacing: "0.10em", fontWeight: "400", opacity: 0.9 },
+  { letterSpacing: "0.18em", fontWeight: "500", opacity: 1 },
+  { letterSpacing: "0.14em", fontWeight: "600", opacity: 0.95 }
+];
+
+function applyStyle() {
+  const s = stylePresets[styleIndex];
+  Object.assign(nameEl.style, s);
+}
+
+// Start with first style
+applyStyle();
+
+function tick() {
+  // Update visible text
+  nameEl.textContent = text.slice(0, i);
+
+  if (direction === 1) {
+    // Typing forward
+    if (i < text.length) {
+      i++;
+    } else {
+      // Full name shown → small pause → start deleting
+      direction = -1;
+      setTimeout(tick, 800);
+      return;
     }
-
-    html, body {
-      height: 100%;
+  } else {
+    // Deleting
+    if (i > 0) {
+      i--;
+    } else {
+      // Fully deleted → switch style → start typing again
+      direction = 1;
+      styleIndex = (styleIndex + 1) % stylePresets.length;
+      applyStyle();
+      setTimeout(tick, 300);
+      return;
     }
+  }
 
-    /* Fully transparent so it blends into Google Sites */
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color: inherit; /* follows Google Sites theme */
-    }
+  const speed = direction === 1 ? 90 : 60; // typing vs deleting speed
+  setTimeout(tick, speed);
+}
 
-    /* Main text container */
-    .cursor-reveal {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 32px;
-      white-space: nowrap;
-      transition:
-        letter-spacing 0.4s ease,
-        font-weight 0.4s ease,
-        opacity 0.4s ease,
-        transform 0.4s ease;
-      transform: translateZ(0); /* crisp rendering */
-    }
-
-    /* Blinking cursor */
-    .cursor {
-      width: 3px;
-      height: 1em;
-      background: currentColor;
-      display: inline-block;
-      margin-left: 2px;
-      vertical-align: bottom;
-      animation: blink 1s steps(1) infinite;
-    }
-
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      50.01%, 100% { opacity: 0; }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="cursor-reveal">
-    <span id="name"></span><span class="cursor"></span>
-  </div>
-
-  <script>
-    /* === CONFIG === */
-    const TEXT = "MOHAMMED FARAH";
-
-    // Timing (tweak if you want)
-    const TYPE_SPEED = 90;
-    const DELETE_SPEED = 60;
-    const HOLD_AFTER_TYPE = 1200;
-    const HOLD_AFTER_DELETE = 500;
-
-    // Elements
-    const nameEl = document.getElementById("name");
-
-    // Typing state
-    let i = 0;
-    let deleting = false;
-    let styleIndex = 0;
-
-    // Subtle, professional style presets
-    // These feel deliberate, not chaotic
-    const STYLE_PRESETS = [
-      { letterSpacing: "0.10em", fontWeight: "400", opacity: 0.9, transform: "translateY(0px)" },
-      { letterSpacing: "0.14em", fontWeight: "500", opacity: 1.0, transform: "translateY(-1px)" },
-      { letterSpacing: "0.12em", fontWeight: "600", opacity: 0.95, transform: "translateY(0px)" }
-    ];
-
-    function applyStyle() {
-      const s = STYLE_PRESETS[styleIndex];
-      Object.assign(nameEl.style, s);
-    }
-
-    // Initialize first style
-    applyStyle();
-
-    function autoplay() {
-      if (!deleting) {
-        // Typing forward
-        if (i < TEXT.length) {
-          i++;
-          nameEl.textContent = TEXT.slice(0, i);
-          setTimeout(autoplay, TYPE_SPEED);
-        } else {
-          // Full word shown → pause → start deleting
-          setTimeout(() => deleting = true, HOLD_AFTER_TYPE);
-          setTimeout(autoplay, HOLD_AFTER_TYPE);
-        }
-      } else {
-        // Deleting backward
-        if (i > 0) {
-          i--;
-          nameEl.textContent = TEXT.slice(0, i);
-          setTimeout(autoplay, DELETE_SPEED);
-        } else {
-          // Fully cleared → next style → pause → type again
-          deleting = false;
-          styleIndex = (styleIndex + 1) % STYLE_PRESETS.length;
-          applyStyle();
-          setTimeout(autoplay, HOLD_AFTER_DELETE);
-        }
-      }
-    }
-
-    // Start animation
-    autoplay();
-  </script>
-
-</body>
-</html>
+// Kick it off
+tick();
+</script>
