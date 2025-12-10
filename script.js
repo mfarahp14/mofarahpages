@@ -16,6 +16,7 @@ const stylePresets = [
 ];
 
 function applyStyle() {
+  if (!nameEl) return;
   const s = stylePresets[styleIndex];
   Object.assign(nameEl.style, s);
 }
@@ -24,6 +25,8 @@ function applyStyle() {
 applyStyle();
 
 function tick() {
+  if (!nameEl) return;
+
   // Update visible text
   nameEl.textContent = text.slice(0, i);
 
@@ -58,8 +61,30 @@ function tick() {
 // Kick it off
 tick();
 
-/* === Small extra: dynamic year in footer === */
+/* === Dynamic Year in Footer === */
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
+}
+
+/* === Reveal on Scroll === */
+const revealEls = document.querySelectorAll(".reveal");
+
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  revealEls.forEach(el => observer.observe(el));
+} else {
+  // Fallback: just show them
+  revealEls.forEach(el => el.classList.add("reveal-visible"));
 }

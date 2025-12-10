@@ -5,99 +5,231 @@
   <title>Mohammed Farah | E-Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Font (optional) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Your JS, with defer so DOM is ready when it runs -->
   <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Top Nav -->
   <header class="top-nav">
-    <div class="logo">MF</div>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="nav-inner">
+      <a href="#top" class="logo">
+        <span class="logo-mark">MF</span>
+        <span class="logo-text">Mohammed Farah</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <!-- HERO SECTION with your name autoplay -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="name-line">
-        <span id="name"></span>
-        <span class="cursor"></span>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="eyebrow">Electrical & Computer Engineering @ Duke</p>
+        <div class="name-line">
+          <span id="name"></span>
+          <span class="cursor"></span>
+        </div>
+        <p class="hero-tagline">
+          I design and build systems that connect hardware, software, and real-world impact — 
+          from medical devices to robotics and tools.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn primary">View Projects</a>
+          <a href="#contact" class="btn ghost">Get in Touch</a>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="meta-label">Focus</span>
+            <span class="meta-value">Robotics • Embedded • Systems</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Currently</span>
+            <span class="meta-value">B.S.E. ECE @ Duke</span>
+          </div>
+        </div>
       </div>
-      <p class="tagline">Electrical & Computer Engineering @ Duke • Builder of smart systems & tools</p>
-      <div class="hero-buttons">
-        <a href="#projects" class="btn primary">View Projects</a>
-        <a href="#about" class="btn ghost">About Me</a>
+
+      <div class="hero-right">
+        <div class="orb-bg"></div>
+        <div class="hero-card">
+          <p class="hero-card-title">HemoSave Device</p>
+          <p class="hero-card-text">
+            Non-invasive postpartum hemorrhage monitoring for low-resource settings.
+          </p>
+          <ul class="hero-card-list">
+            <li>95%+ correlation vs. premium devices</li>
+            <li>&lt;$500 BOM target</li>
+            <li>Fast, easy clinical workflow</li>
+          </ul>
+        </div>
+        <div class="hero-pill-row">
+          <span class="pill">ROS</span>
+          <span class="pill">OpenCV</span>
+          <span class="pill">Python</span>
+          <span class="pill">C/C++</span>
+        </div>
       </div>
     </div>
   </section>
 
   <main>
     <!-- ABOUT -->
-    <section id="about" class="section">
-      <h2>About Me</h2>
-      <p>
-        I’m an engineering student interested in embedded systems, robotics, and practical tools
-        that solve real-world problems. I love combining hardware with clean, well-structured software.
-      </p>
+    <section id="about" class="section reveal">
+      <div class="section-header">
+        <h2>About Me</h2>
+        <p class="section-subtitle">
+          I enjoy working close to the hardware: sensors, perception, and the code that makes it all behave.
+        </p>
+      </div>
+      <div class="about-layout">
+        <p>
+          I’m an engineering student with a strong interest in embedded systems, robotics, and human-centered tools.
+          I like taking messy real-world problems and structuring them into clean, testable systems.
+        </p>
+        <p>
+          Recently, I’ve been working on a medical device to measure blood loss accurately in postpartum care,
+          as well as robotics projects using ROS and computer vision. I’m always looking for teams where I can
+          learn fast, contribute quickly, and ship things that matter.
+        </p>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section reveal">
+      <div class="section-header">
+        <h2>Skills</h2>
+        <p class="section-subtitle">Tools and technologies I use most often.</p>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skills-card">
+          <h3>Languages</h3>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">C/C++</span>
+            <span class="pill">Java</span>
+            <span class="pill">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="skills-card">
+          <h3>Tools & Frameworks</h3>
+          <div class="pill-row">
+            <span class="pill">ROS</span>
+            <span class="pill">OpenCV</span>
+            <span class="pill">Docker</span>
+            <span class="pill">Git</span>
+          </div>
+        </div>
+
+        <div class="skills-card">
+          <h3>Domains</h3>
+          <div class="pill-row">
+            <span class="pill">Robotics</span>
+            <span class="pill">Embedded Systems</span>
+            <span class="pill">Computer Vision</span>
+            <span class="pill">Prototyping</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- PROJECTS -->
-    <section id="projects" class="section">
-      <h2>Projects</h2>
-      <div class="grid">
-        <article class="card">
+    <section id="projects" class="section reveal">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <p class="section-subtitle">
+          A snapshot of what I’ve built and what I’m exploring.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+        <article class="project-card">
+          <div class="project-tag">Healthtech</div>
           <h3>HemoSave Device</h3>
           <p>
-            Co-founded a device to measure blood loss and detect postpartum hemorrhage with high accuracy,
-            designed for low-resource settings.
+            Co-founded a device to measure blood loss and detect postpartum hemorrhage in low-resource settings.
           </p>
           <ul>
-            <li>95%+ correlation to premium devices</li>
-            <li>&lt;$500 bill of materials</li>
-            <li>Rapid, easy-to-use workflow</li>
+            <li>95%+ correlation with premium devices</li>
+            <li>&lt;$500 target cost &amp; fast setup</li>
+            <li>Designed around clinical workflow constraints</li>
           </ul>
         </article>
 
-        <article class="card">
-          <h3>Robotics / ROS Project</h3>
+        <article class="project-card">
+          <div class="project-tag">Robotics</div>
+          <h3>ROS Perception & Control</h3>
           <p>
-            Integrated perception and control pipelines using ROS, image processing, and custom scripts
-            for real-time robot behavior.
+            Integrated perception and behavior for a robot using ROS, custom image processing, and control scripts.
           </p>
+          <ul>
+            <li>Camera-based detection pipeline</li>
+            <li>Real-time control loop in ROS</li>
+            <li>Modular nodes for easier debugging</li>
+          </ul>
         </article>
 
-        <article class="card">
-          <h3>Personal Tools & Experiments</h3>
+        <article class="project-card">
+          <div class="project-tag">Tools</div>
+          <h3>Personal Utilities & Experiments</h3>
           <p>
-            Small web tools, simulations, and scripts that help automate everyday tasks and visualize ideas.
+            Web tools, simulations, and scripts that automate workflows, visualize ideas, and test new concepts.
           </p>
+          <ul>
+            <li>Small utilities to speed up repetitive tasks</li>
+            <li>Prototyped visual interfaces in JS</li>
+          </ul>
         </article>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="section">
-      <h2>Contact</h2>
-      <p>Open to internships, collaborations, and cool technical projects.</p>
-      <ul class="contact-list">
-        <li><strong>Email:</strong> <a href="mailto:mohamedfarahp14@gmail.com">mohamedfarahp14@gmail.com</a></li>
-        <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/mohammed-a-farah" target="_blank">linkedin.com/in/mohammed-a-farah</a></li>
-        <li><strong>GitHub:</strong> <a href="#" target="_blank">github.com/your-username</a></li>
-      </ul>
+    <section id="contact" class="section reveal">
+      <div class="section-header">
+        <h2>Contact</h2>
+        <p class="section-subtitle">
+          I’m open to internships, research, and collaborations. Feel free to reach out.
+        </p>
+      </div>
+
+      <div class="contact-layout">
+        <ul class="contact-list">
+          <li>
+            <span class="contact-label">Email</span>
+            <a href="mailto:mohamedfarahp14@gmail.com">mohamedfarahp14@gmail.com</a>
+          </li>
+          <li>
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://linkedin.com/in/mohammed-a-farah" target="_blank">
+              linkedin.com/in/mohammed-a-farah
+            </a>
+          </li>
+          <li>
+            <span class="contact-label">GitHub</span>
+            <a href="https://github.com/mfarahp14" target="_blank">
+              github.com/mfarahp14
+            </a>
+          </li>
+        </ul>
+      </div>
     </section>
   </main>
 
   <footer class="footer">
-    © <span id="year"></span> Mohammed Farah. All rights reserved.
+    <span>© <span id="year"></span> Mohammed Farah.</span>
+    <span class="footer-dot">•</span>
+    <span>Built with HTML, CSS & JS.</span>
   </footer>
 </body>
 </html>
