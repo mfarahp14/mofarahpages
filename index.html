@@ -1,103 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mohammed Farah – Hover Name</title>
+<meta charset="UTF-8" />
+<title>Mohammed Farah – Dynamic Font Typing</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=
+JetBrains+Mono:wght@400;500&
+family=Inter:wght@400;600&
+family=Playfair+Display:wght@500;600&
+family=Orbitron:wght@400;600&
+family=Pacifico&
+display=swap" rel="stylesheet">
 
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
 
-    html, body {
-      height: 100%;
-    }
+  html, body {
+    height: 100%;
+  }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent; /* 🔹 fully transparent for Google Sites */
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color: inherit; /* follow parent text color in Google Sites */
-    }
+  body {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    font-family: system-ui, sans-serif;
+    color: inherit;
+  }
 
-    .hover-zone {
-      padding: 24px 32px;
-      border-radius: 999px;
-      background: transparent;       /* 🔹 no background */
-      border: none;                  /* 🔹 no border */
-      box-shadow: none;              /* 🔹 no shadow */
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .cursor-reveal {
+    font-size: 32px;
+    letter-spacing: 0.06em;
+    transition: font-family 0.4s ease;
+    white-space: nowrap;
+  }
 
-    .cursor-reveal {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 32px;
-      letter-spacing: 0.08em;
-      color: currentColor; /* 🔹 inherits color from parent (Google Sites) */
-    }
+  .cursor {
+    display:inline-block;
+    width:3px;
+    height:32px;
+    background:currentColor;
+    margin-left:3px;
+    animation: blink 1s steps(1) infinite;
+  }
 
-    .cursor {
-      width: 3px;
-      height: 32px;
-      background: currentColor; /* 🔹 blinking bar uses same color */
-      display: inline-block;
-      margin-left: 2px;
-      animation: blink 1s steps(1) infinite;
-    }
-
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      50.01%, 100% { opacity: 0; }
-    }
-  </style>
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+</style>
 </head>
 
 <body>
-  <div class="hover-zone" id="hoverZone">
-    <div class="cursor-reveal">
-      <span id="name"></span><span class="cursor"></span>
-    </div>
-  </div>
+<div class="cursor-reveal" id="textBox">
+  <span id="name"></span><span class="cursor"></span>
+</div>
 
-  <script>
-    // Text to reveal
-    const text = "MOHAMMED FARAH";
-    const out = document.getElementById("name");
-    const zone = document.getElementById("hoverZone");
+<script>
+const text = "MOHAMMED FARAH";
+const out = document.getElementById("name");
+const box = document.getElementById("textBox");
 
-    let i = 0;
-    let typingInterval;
-    let deletingInterval;
+const fonts = [
+  "'JetBrains Mono', monospace",
+  "'Inter', sans-serif",
+  "'Playfair Display', serif",
+  "'Orbitron', sans-serif",
+  "'Pacifico', cursive"
+];
 
-    zone.addEventListener("mouseenter", () => {
-      clearInterval(deletingInterval);
-      typingInterval = setInterval(() => {
-        if (i < text.length) {
-          out.textContent = text.slice(0, ++i);
-        }
-      }, 90);
-    });
+let i = 0;
+let deleting = false;
 
-    zone.addEventListener("mouseleave", () => {
-      clearInterval(typingInterval);
-      deletingInterval = setInterval(() => {
-        if (i > 0) {
-          out.textContent = text.slice(0, --i);
-        }
-      }, 60);
-    });
-  </script>
+const TYPE_SPEED = 100;
+const DELETE_SPEED = 60;
+const HOLD_AFTER_TYPE = 1200;
+const HOLD_AFTER_DELETE = 600;
+
+function pickRandomFont() {
+  const choice = fonts[Math.floor(Math.random() * fonts.length)];
+  box.style.fontFamily = choice;
+}
+
+function autoplay() {
+  if (!deleting) {
+    if (i < text.length) {
+      out.textContent = text.slice(0, ++i);
+      setTimeout(autoplay, TYPE_SPEED);
+    } else {
+      setTimeout(() => deleting = true, HOLD_AFTER_TYPE);
+      setTimeout(autoplay, HOLD_AFTER_TYPE);
+    }
+  } else {
+    if (i > 0) {
+      out.textContent = text.slice(0, --i);
+      setTimeout(autoplay, DELETE_SPEED);
+    } else {
+      deleting = false;
+      pickRandomFont();
+      setTimeout(autoplay, HOLD_AFTER_DELETE);
+    }
+  }
+}
+
+pickRandomFont();
+autoplay();
+</script>
 </body>
 </html>
