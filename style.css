@@ -292,11 +292,11 @@ h1, h2, h3 {
 .hero-note-centered {
   margin-top: 2.2rem;
   width: min(360px, 100%);
-  background: rgba(18, 10, 7, 0.96);
-  border-radius: 1.1rem;
-  padding: 0.9rem 1rem 0.85rem;
-  border: 1px solid rgba(120, 84, 60, 0.7);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.88);
+  background: var(--card-bg);
+  border-radius: 1.8rem;
+  padding: 1.5rem 1.5rem 1.3rem;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   text-align: left;
 }
 
@@ -305,7 +305,9 @@ h1, h2, h3 {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: #d4b38f;
+  color: #b59378;
+  font-family: var(--font-body);
+  font-weight: 600;
 }
 
 .hero-note-text {
