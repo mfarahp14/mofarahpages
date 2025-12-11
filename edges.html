@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edge Detection | Mohammed Farah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts (same as main site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Shared styles + scripts -->
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+
+  <!-- OpenCV for live edges (only used on this page) -->
+  <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+
+  <!-- Page-specific styles (only for edges.html) -->
+  <style>
+    /* Fullscreen hero area */
+    .edge-hero-full {
+      padding: 4.5rem 0 2.5rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edge-demo {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.4rem;
+      transition: transform 0.4s ease;
+    }
+
+    .edge-crossfade-wrap {
+      position: relative;
+      width: min(480px, 80vw);
+      aspect-ratio: 3 / 4;
+      border-radius: 1.6rem;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      background: #000;
+      transition: transform 0.4s ease;
+    }
+
+    .edge-img-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.2s linear;
+      pointer-events: none;
+    }
+
+    .edge-img-original {
+      opacity: 1;
+    }
+
+    .edge-img-edges {
+      opacity: 0;
+    }
+
+    /* Control panel (hidden until scroll threshold reached) */
+    .edge-controls {
+      width: 320px;
+      max-width: 100%;
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      border: 1px solid var(--card-edge);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.22);
+      padding: 1.1rem 1.2rem 1rem;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .edge-controls h3 {
+      margin: 0 0 0.4rem;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .edge-controls-copy,
+    .edge-controls-note {
+      font-size: 0.86rem;
+      color: var(--text-sub);
+      margin: 0.3rem 0 0.7rem;
+    }
+
+    .slider-group {
+      margin-bottom: 0.8rem;
+    }
+
+    .slider-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #7d6554;
+    }
+
+    .slider-value {
+      font-size: 0.76rem;
+      color: var(--text-main);
+    }
+
+    .slider-group input[type="range"] {
+      width: 100%;
+      margin-top: 0.25rem;
+    }
+
+    /* When the scroll has fully transitioned to edges */
+    .edge-demo.demo-active .edge-crossfade-wrap {
+      transform: translateX(-18px);
+    }
+
+    .edge-demo.demo-active .edge-controls {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Explanation section reuses existing .section + .edge-pipeline from here down */
+    .edge-pipeline {
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      border: 1px solid var(--card-edge);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.25);
+      padding: 1.2rem 1.3rem 1rem;
+    }
+
+    .edge-pipeline h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .edge-pipeline ol {
+      margin: 0 0 0.7rem;
+      padding-left: 1.2rem;
+      font-size: 0.92rem;
+      color: var(--text-sub);
+    }
+
+    @media (max-width: 900px) {
+      .edge-demo {
+        flex-direction: column;
+        gap: 1.6rem;
+      }
+
+      .edge-demo.demo-active .edge-crossfade-wrap {
+        transform: translateX(0); /* no sideways shift on small screens */
+      }
+
+      .edge-controls {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP NAV (links back to main page) -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="index.html#home" class="logo">
+        <span class="logo-text">Mohammed Farah</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html#home">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO: image center, scroll to edges + controls -->
+    <section class="edge-hero-full">
+      <div class="edge-demo" id="edge-demo">
+        <div class="edge-crossfade-wrap" id="edge-crossfade">
+          <img
+            src="assets/coffee.jpg"
+            alt="Original coffee image"
+            class="edge-img-layer edge-img-original"
+            id="edge-original"
+          />
+          <canvas
+            class="edge-img-layer edge-img-edges"
+            id="edge-canvas"
+          ></canvas>
+        </div>
+
+        <aside class="edge-controls" id="edge-controls">
+          <h3>Edge Controls</h3>
+          <p class="edge-controls-copy">
+            Scroll until the image becomes lines, then tune the pipeline:
+          </p>
+
+          <div class="slider-group">
+            <label for="blurSlider">
+              Blur kernel size
+              <span class="slider-value" id="blurValue">2</span>
+            </label>
+            <input
+              type="range"
+              id="blurSlider"
+              min="0"
+              max="5"
+              value="2"
+              disabled
+            />
+          </div>
+
+          <div class="slider-group">
+            <label for="lowSlider">
+              Canny min threshold
+              <span class="slider-value" id="lowValue">50</span>
+            </label>
+            <input
+              type="range"
+              id="lowSlider"
+              min="0"
+              max="150"
+              value="50"
+              disabled
+            />
+          </div>
+
+          <div class="slider-group">
+            <label for="highSlider">
+              Canny max threshold
+              <span class="slider-value" id="highValue">150</span>
+            </label>
+            <input
+              type="range"
+              id="highSlider"
+              min="50"
+              max="255"
+              value="150"
+              disabled
+            />
+          </div>
+
+          <p class="edge-controls-note">
+            Blur smooths noise before edge detection; min/max thresholds
+            change which gradients are considered edges.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Explanation section -->
+    <section class="section">
+      <div class="edge-pipeline">
+        <h3>From latte to lines</h3>
+        <p>
+          As you scroll, the original photo of a latte collapses into an edge
+          map. Once it’s fully edges, you can tune the blur and Canny
+          thresholds yourself. This mirrors how I iterate on perception
+          pipelines: start from raw pixels, end with a representation a robot
+          can reason over.
+        </p>
+        <ol>
+          <li><strong>Capture:</strong> Start with a high-contrast, well-lit frame.</li>
+          <li><strong>Preprocess:</strong> Convert to grayscale and apply a small Gaussian blur.</li>
+          <li><strong>Edge detection:</strong> Run Canny with adjustable min/max thresholds.</li>
+          <li><strong>Refine:</strong> Iterate until the edges capture the structure you care about.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Mohammed Farah.</span>
+    <span class="footer-dot">•</span>
+    <span>Edge detection demo.</span>
+  </footer>
+
+  <!-- Page-specific JS (only for edges.html) -->
+  <script>
+    const edgeDemo = document.getElementById("edge-demo");
+    const originalImg = document.getElementById("edge-original");
+    const edgeCanvas = document.getElementById("edge-canvas");
+
+    const blurSlider = document.getElementById("blurSlider");
+    const lowSlider = document.getElementById("lowSlider");
+    const highSlider = document.getElementById("highSlider");
+
+    const blurValue = document.getElementById("blurValue");
+    const lowValue = document.getElementById("lowValue");
+    const highValue = document.getElementById("highValue");
+
+    let demoActive = false; // when fully edges
+
+    function handleScroll() {
+      const maxFadeScroll = 350; // px for full transition
+      const y = window.scrollY;
+      const t = Math.min(Math.max(y / maxFadeScroll, 0), 1); // 0..1
+
+      const originalOpacity = 1 - t;
+      const edgesOpacity = t;
+
+      if (originalImg && edgeCanvas) {
+        originalImg.style.opacity = originalOpacity;
+        edgeCanvas.style.opacity = edgesOpacity;
+      }
+
+      if (t >= 1 && !demoActive) {
+        demoActive = true;
+        edgeDemo.classList.add("demo-active");
+        [blurSlider, lowSlider, highSlider].forEach((s) => (s.disabled = false));
+        updateEdges(); // ensure edges drawn once controls appear
+      } else if (t < 1 && demoActive) {
+        demoActive = false;
+        edgeDemo.classList.remove("demo-active");
+        [blurSlider, lowSlider, highSlider].forEach((s) => (s.disabled = true));
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    // === OpenCV edge pipeline for this page only ===
+    let srcMat, grayMat, blurMat, edgeMat;
+    let cvReady = false;
+    let imageReady = false;
+
+    function tryInitCv() {
+      if (cvReady && imageReady && originalImg.naturalWidth > 0) {
+        initCvPipeline();
+      }
+    }
+
+    function waitForCv() {
+      if (window.cv && cv.Mat) {
+        cvReady = true;
+        tryInitCv();
+      } else {
+        setTimeout(waitForCv, 80);
+      }
+    }
+    waitForCv();
+
+    if (originalImg.complete) {
+      imageReady = true;
+      tryInitCv();
+    } else {
+      originalImg.onload = () => {
+        imageReady = true;
+        tryInitCv();
+      };
+    }
+
+    function initCvPipeline() {
+      const w = originalImg.naturalWidth;
+      const h = originalImg.naturalHeight;
+
+      edgeCanvas.width = w;
+      edgeCanvas.height = h;
+
+      srcMat = cv.imread(originalImg);
+      grayMat = new cv.Mat();
+      blurMat = new cv.Mat();
+      edgeMat = new cv.Mat();
+
+      updateEdges();
+    }
+
+    function updateEdges() {
+      if (!cvReady || !srcMat) return;
+
+      const blurLevel = parseInt(blurSlider.value, 10);
+      const low = parseInt(lowSlider.value, 10);
+      const high = parseInt(highSlider.value, 10);
+
+      if (blurValue) blurValue.textContent = blurLevel;
+      if (lowValue) lowValue.textContent = low;
+      if (highValue) highValue.textContent = high;
+
+      cv.cvtColor(srcMat, grayMat, cv.COLOR_RGBA2GRAY, 0);
+
+      if (blurLevel > 0) {
+        const k = blurLevel * 2 + 1; // odd kernel size
+        const ksize = new cv.Size(k, k);
+        cv.GaussianBlur(grayMat, blurMat, ksize, 0, 0, cv.BORDER_DEFAULT);
+      } else {
+        grayMat.copyTo(blurMat);
+      }
+
+      cv.Canny(blurMat, edgeMat, low, high);
+      cv.imshow("edge-canvas", edgeMat);
+    }
+
+    [blurSlider, lowSlider, highSlider].forEach((slider) => {
+      slider.addEventListener("input", () => {
+        if (!demoActive) return;
+        updateEdges();
+      });
+    });
+  </script>
+</body>
+</html>
