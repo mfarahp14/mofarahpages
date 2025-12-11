@@ -78,17 +78,14 @@ h1, h2, h3 {
   color: var(--text-main);
 }
 
-.logo-mark {
-  width: 34px;
+.logo-img {
   height: 34px;
-  border-radius: 999px;
-  border: 1px solid rgba(231, 207, 182, 0.9);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;  
 }
+
 
 .logo-text {
   font-size: 0.9rem;
@@ -127,7 +124,7 @@ h1, h2, h3 {
   border: 1px solid rgba(198, 118, 60, 0.7);
   font-size: 0.8rem;
   background: radial-gradient(circle at top left, #c6763c, #a75a2b);
-  color: #130c08 !important;
+  color: #ffffff !important;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8);
 }
 
