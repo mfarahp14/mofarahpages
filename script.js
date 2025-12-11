@@ -2,6 +2,29 @@
 const text = "MOHAMMED FARAH";
 const nameEl = document.getElementById("name");
 
+/* === INTRO OVERLAY HIDE ON FIRST SCROLL === */
+const introOverlay = document.getElementById("intro-name");
+let introDismissed = false;
+
+if (introOverlay) {
+  // Dismiss when the user scrolls a bit
+  window.addEventListener("scroll", () => {
+    if (introDismissed) return;
+    if (window.scrollY > 40) {
+      introOverlay.classList.add("intro-hidden");
+      introDismissed = true;
+    }
+  });
+
+  // Also dismiss if they click or tap, just in case
+  window.addEventListener("click", () => {
+    if (introDismissed) return;
+    introOverlay.classList.add("intro-hidden");
+    introDismissed = true;
+  });
+}
+
+
 // Typing state
 let i = 0;
 let direction = 1; // 1 = typing, -1 = deleting
