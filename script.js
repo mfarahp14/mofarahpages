@@ -77,6 +77,23 @@ tiles.forEach(tile => {
   });
 });
 
+/* === SMOOTH SCROLL FOR NAV LINKS === */
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+navLinks.forEach(link => {
+  link.addEventListener("click", event => {
+    const href = link.getAttribute("href");
+    if (!href || !href.startsWith("#")) return;
+
+    const targetId = href.slice(1);
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
 /* === DYNAMIC YEAR IN FOOTER === */
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
