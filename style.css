@@ -129,8 +129,14 @@ h1, h2, h3 {
 
 /* HERO */
 .hero {
-  padding: 4.2rem 1.5rem 3.2rem;
+  background: linear-gradient(
+    to bottom,
+    #faf7f3 0%,
+    #f3ede7 40%,
+    transparent 100%
+  );
 }
+
 
 .hero-inner {
   max-width: 780px;
