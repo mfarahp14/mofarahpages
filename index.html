@@ -5,27 +5,27 @@
   <title>Mohammed Farah | Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Basic SEO -->
+  <meta name="description" content="Personal portfolio of Mohammed Farah – student engineer building robotics, healthtech, and product-focused systems." />
+
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Headings + name animation -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <!-- Body + UI text -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Headings + Name -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Body + UI -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <!-- Your CSS + JS (THIS WAS MISSING) -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Styles + Scripts -->
+  <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
 </head>
-
 <body>
   <!-- TOP NAV -->
   <header class="top-nav">
     <div class="nav-inner">
       <a href="#home" class="logo">
-        <img src="assets/mf-geometric-logo-400x200.png" alt="MF Logo" class="logo-img">
+        <img src="assets/mf-geometric-logo-400x200.png" alt="MF Logo" class="logo-img" />
         <span class="logo-text">Mohammed Farah</span>
       </a>
 
@@ -39,6 +39,7 @@
           href="assets/Mohammed_Farah_Resume.pdf"
           class="btn nav-resume"
           target="_blank"
+          rel="noopener noreferrer"
         >
           Download Resume
         </a>
@@ -49,45 +50,40 @@
   <!-- HOME / HERO -->
   <section id="home" class="hero">
     <div class="hero-inner">
-      <div class="hero-left">
-        <p class="hero-eyebrow">Student • Builder • Product-minded Engineer</p>
+      <p class="hero-eyebrow">Student • Builder • Product-minded Engineer</p>
 
-        <div class="name-line">
-          <span id="name"></span>
-          <span class="cursor"></span>
+      <div class="name-line">
+        <span id="name"></span>
+        <span class="cursor"></span>
+      </div>
+
+      <p class="hero-tagline">
+        I’m an electrical &amp; computer engineering student who loves building things
+        that move, sense, and actually solve problems — from medical devices and
+        robotics to libraries and tools.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">What I do</span>
+          <span class="meta-value">Robotics • Product Design • Systems</span>
         </div>
-
-        <p class="hero-tagline">
-          I’m an electrical & computer engineering student who loves building things
-          that move, sense, and actually solve problems — from medical devices and
-          robotics to libraries and tools.
-        </p>
-
-        <div class="hero-meta">
-          <div class="meta-item">
-            <span class="meta-label">What I do</span>
-            <span class="meta-value">Robotics • Product Design • Systems</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">Experience</span>
-            <span class="meta-value">Startup co-founder & student engineer</span>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a href="#projects" class="btn primary">View Projects</a>
-          <a href="#about" class="btn ghost">About Me</a>
+        <div class="meta-item">
+          <span class="meta-label">Experience</span>
+          <span class="meta-value">Startup co-founder &amp; student engineer</span>
         </div>
       </div>
 
-      <div class="hero-right">
-        <div class="hero-mug"></div>
-        <div class="hero-note">
-          <p class="hero-note-title">Current focus</p>
-          <p class="hero-note-text">
-            Closing gaps in how we measure, control, and reason about real-world systems.
-          </p>
-        </div>
+      <div class="hero-actions">
+        <a href="#projects" class="btn primary">View Projects</a>
+        <a href="#about" class="btn ghost">About Me</a>
+      </div>
+
+      <div class="hero-note hero-note-centered">
+        <p class="hero-note-title">Current focus</p>
+        <p class="hero-note-text">
+          Closing gaps in how we measure, control, and reason about real-world systems.
+        </p>
       </div>
     </div>
   </section>
@@ -104,7 +100,6 @@
 
       <div class="about-layout">
         <div class="about-photo-wrap">
-          <!-- UPDATE src TO MATCH YOUR FILE IN /assets -->
           <img
             src="assets/my_picture.jpg"
             alt="Portrait of Mohammed Farah"
@@ -114,7 +109,7 @@
 
         <div class="about-text">
           <p>
-            I’m Mohammed, an electrical & computer engineering student who enjoys
+            I’m Mohammed, an electrical &amp; computer engineering student who enjoys
             working close to the hardware: robots, sensors, and the software that
             ties everything together.
           </p>
@@ -124,13 +119,13 @@
             the technical implementation and the product thinking: what the system
             should actually do, and why it matters.
           </p>
-          <p>
-            Right now, I’m focused on:
-          </p>
+          <p>Right now, I’m focused on:</p>
           <ul>
             <li>Designing HemoSave around real clinical gaps and workflows.</li>
             <li>Building robots that feel purposeful, not just “demoable”.</li>
-            <li>Developing a kinematics library that makes robotics math less painful to use.</li>
+            <li>
+              Developing a kinematics library that makes robotics math less painful to use.
+            </li>
           </ul>
         </div>
       </div>
@@ -145,7 +140,6 @@
         </p>
       </div>
 
-      <!-- Project cards (click → bounce + scroll to details) -->
       <div class="project-card-grid">
         <button class="project-card-tile" data-target="hemosave">
           <span class="project-card-title">HemoSave</span>
@@ -163,9 +157,7 @@
         </button>
       </div>
 
-      <!-- Project details -->
       <div class="project-details">
-        <!-- HEMOSAVE -->
         <article id="hemosave" class="project-detail-card">
           <h3>HemoSave Device</h3>
           <p class="project-detail-label">About this project</p>
@@ -184,14 +176,20 @@
 
           <ul class="project-bullets">
             <li>Co-founded the project and helped define the core product requirements.</li>
-            <li>Ran conversations with clinicians to understand workflow constraints and real failure modes.</li>
-            <li>Focused on making the system usable in noisy, resource-constrained environments.</li>
+            <li>
+              Ran conversations with clinicians to understand workflow constraints
+              and real failure modes.
+            </li>
+            <li>
+              Focused on making the system usable in noisy, resource-constrained environments.
+            </li>
           </ul>
 
-          <p class="project-status">Status: Active • Ongoing validation and iteration.</p>
+          <p class="project-status">
+            Status: Active &bull; Ongoing validation and iteration.
+          </p>
         </article>
 
-        <!-- SANTABOT -->
         <article id="santabot" class="project-detail-card">
           <h3>SantaBot</h3>
           <p class="project-detail-label">About this project</p>
@@ -207,14 +205,19 @@
           </p>
 
           <ul class="project-bullets">
-            <li>Implemented behaviors that react to the environment in real time.</li>
-            <li>Used this project as a sandbox to test control ideas and hardware integrations.</li>
+            <li>
+              Implemented behaviors that react to the environment in real time.
+            </li>
+            <li>
+              Used this project as a sandbox to test control ideas and hardware integrations.
+            </li>
           </ul>
 
-          <p class="project-status">Status: Complete for now • Future upgrades possible.</p>
+          <p class="project-status">
+            Status: Complete for now &bull; Future upgrades possible.
+          </p>
         </article>
 
-        <!-- KINEMATICS LIBRARY -->
         <article id="kinematics" class="project-detail-card">
           <h3>Kinematics Library</h3>
           <p class="project-detail-label">About this project</p>
@@ -231,11 +234,15 @@
 
           <ul class="project-bullets">
             <li>Focus on clarity of API and documentation, not just performance.</li>
-            <li>Designed to be modular so specific pieces can be reused in different projects.</li>
-            <li>Experimental space to encode my own understanding of robot motion in code.</li>
+            <li>Designed to be modular so specific pieces can be reused.</li>
+            <li>
+              Experimental space to encode my own understanding of robot motion in code.
+            </li>
           </ul>
 
-          <p class="project-status">Status: Active • Being expanded as I build more robots.</p>
+          <p class="project-status">
+            Status: Active &bull; Being expanded as I build more robots.
+          </p>
         </article>
       </div>
     </section>
@@ -261,7 +268,7 @@
         </div>
 
         <div class="skills-card">
-          <h3>Robotics & Systems</h3>
+          <h3>Robotics &amp; Systems</h3>
           <div class="pill-row">
             <span class="pill">ROS</span>
             <span class="pill">OpenCV</span>
@@ -271,11 +278,11 @@
         </div>
 
         <div class="skills-card">
-          <h3>Product & Tools</h3>
+          <h3>Product &amp; Tools</h3>
           <div class="pill-row">
             <span class="pill">Product Design</span>
             <span class="pill">Rapid Prototyping</span>
-            <span class="pill">Git & GitHub</span>
+            <span class="pill">Git &amp; GitHub</span>
             <span class="pill">Docker</span>
           </div>
         </div>
@@ -299,13 +306,21 @@
           </li>
           <li>
             <span class="contact-label">LinkedIn</span>
-            <a href="https://linkedin.com/in/mohammed-a-farah" target="_blank">
+            <a
+              href="https://linkedin.com/in/mohammed-a-farah"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               linkedin.com/in/mohammed-a-farah
             </a>
           </li>
           <li>
             <span class="contact-label">GitHub</span>
-            <a href="https://github.com/mfarahp14" target="_blank">
+            <a
+              href="https://github.com/mfarahp14"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               github.com/mfarahp14
             </a>
           </li>
