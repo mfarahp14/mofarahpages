@@ -6,21 +6,26 @@
 }
 
 :root {
-  --bg: #0a0605;
-  --bg-alt: #141010;
-  --accent: #c6763c;        /* coffee / caramel */
-  --accent-soft: rgba(198, 118, 60, 0.18);
-  --card-bg: #1f1511;       /* dark espresso */
-  --card-bg-soft: #241713;
-  --card-edge: rgba(120, 84, 60, 0.7);
-  --text-main: #f4ece4;     /* paper / foam */
-  --text-sub: #c0aa96;
-  --chip-bg: rgba(39, 24, 19, 0.9);
+  /* New lighter latte palette */
+  --bg: #F7F3EE;              /* warm, soft background */
+  --bg-alt: #EFE7DF;          /* gentle secondary background */
+  --accent: #C08A5B;          /* light caramel accent */
+  --accent-soft: rgba(192, 138, 91, 0.18);
+
+  --card-bg: #FFFFFF;         /* white latte foam card */
+  --card-bg-soft: #F2EBE4;    /* gentle beige card */
+  --card-edge: rgba(171, 137, 106, 0.35);
+
+  --text-main: #2E1F16;       /* dark coffee bean */
+  --text-sub: #6A5040;        /* warm medium brown */
+
+  --chip-bg: rgba(223, 208, 194, 0.8); /* light pill background */
   --card-radius: 1.4rem;
 
   --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: "Playfair Display", serif;
 }
+
 
 body {
   margin: 0;
