@@ -6,21 +6,26 @@
 }
 
 :root {
-  --bg: #0b0604;
-  --bg-alt: #141010;
-  --accent: #c6763c;
-  --accent-soft: rgba(198, 118, 60, 0.18);
-  --card-bg: #1b1210;
-  --card-bg-soft: #241713;
-  --card-edge: rgba(120, 84, 60, 0.7);
-  --text-main: #f6ece2; /* brighter primary text */
-  --text-sub: #d2b9a3;  /* brighter secondary text */
-  --chip-bg: rgba(39, 24, 19, 0.9);
+  /* Creamier latte theme */
+  --bg: #f4ede6;              /* soft latte cream */
+  --bg-alt: #efe7df;          /* warm beige */
+  --accent: #c58a55;          /* caramel highlight */
+  --accent-soft: rgba(197, 138, 85, 0.20);
+
+  --card-bg: #fffdfb;         /* pure cream card */
+  --card-bg-soft: #f3e8dd;    /* slightly toasted beige */
+  --card-edge: rgba(182, 140, 104, 0.45);
+
+  --text-main: #3f2a1d;       /* rich brown */
+  --text-sub: #705a4c;        /* soft mocha text */
+
+  --chip-bg: rgba(220, 200, 185, 0.85);
   --card-radius: 1.4rem;
 
   --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: "Playfair Display", serif;
 }
+
 
 body {
   margin: 0;
