@@ -125,7 +125,7 @@ h1, h2, h3 {
   font-size: 0.8rem;
   background: radial-gradient(circle at top left, #c6763c, #a75a2b);
   color: #140b07 !important;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
 }
 /* FULLSCREEN INTRO NAME */
 .intro-name {
@@ -269,25 +269,25 @@ h1, h2, h3 {
   cursor: pointer;
   transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
   background: var(--chip-bg);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
 }
 
 .btn:hover {
   transform: translateY(-2px);
   background: var(--chip-bg);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.95);
 }
 
 .btn.primary {
   background: var(--chip-bg);
   border-color: rgba(120, 84, 60, 0.75);
   color: var(--text-main);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
 }
 
 .btn.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.95);
   background: var(--chip-bg);
   color: var(--text-main);
 }
