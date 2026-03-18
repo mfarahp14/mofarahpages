@@ -20,6 +20,31 @@
   <script src="script.js" defer></script>
 
   <style>
+    /* ── Kinematics card — link variant ── */
+    .project-card-tile--link {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .project-card-arrow {
+      position: absolute;
+      top: 0.85rem;
+      right: 1rem;
+      font-size: 1rem;
+      color: #c9b09a;
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .project-card-tile--link:hover .project-card-arrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ── Kinematics-specific additions ── */
 
     /* Tech-spec grid */
@@ -268,10 +293,11 @@
           <span class="project-card-tag">Robotics • Complete</span>
         </button>
 
-        <button class="project-card-tile" data-target="kinematics">
+        <a href="kinematics.html" class="project-card-tile project-card-tile--link">
           <span class="project-card-title">Kinematics Library</span>
           <span class="project-card-tag">Robotics Tools • WIP</span>
-        </button>
+          <span class="project-card-arrow">↗</span>
+        </a>
       </div>
 
       <div class="project-details">
