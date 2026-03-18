@@ -12,18 +12,133 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Headings + name animation -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
-  <!-- Body + UI text -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Styles + Scripts -->
   <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
+
+  <style>
+    /* ── Kinematics-specific additions ── */
+
+    /* Tech-spec grid */
+    .kin-spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin: 1.1rem 0 0.4rem;
+    }
+
+    .kin-spec-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--card-edge);
+      border-radius: 1rem;
+      padding: 0.8rem 1rem;
+    }
+
+    .kin-spec-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #b59378;
+      font-weight: 600;
+      font-family: var(--font-body);
+      margin-bottom: 0.35rem;
+    }
+
+    .kin-spec-value {
+      font-size: 0.87rem;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    /* Feature tag row */
+    .kin-feature-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .kin-feature-tag {
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(215, 167, 120, 0.12);
+      border: 1px solid rgba(215, 167, 120, 0.45);
+      font-size: 0.75rem;
+      color: #c9a07c;
+      font-family: var(--font-body);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Code snippet block */
+    .kin-code-block {
+      background: #2a1e15;
+      border-radius: 0.9rem;
+      padding: 0.95rem 1.1rem;
+      margin: 1rem 0 0.5rem;
+      overflow-x: auto;
+    }
+
+    .kin-code-block pre {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: #e8d9c8;
+    }
+
+    .kin-code-block .kw   { color: #d7a778; }   /* keyword / function */
+    .kin-code-block .str  { color: #a8c97f; }   /* strings */
+    .kin-code-block .cm   { color: #7d6554; font-style: italic; } /* comments */
+    .kin-code-block .num  { color: #f2c187; }   /* numbers */
+    .kin-code-block .cls  { color: #c8b9f0; }   /* class names */
+
+    /* Section divider inside card */
+    .kin-divider {
+      border: none;
+      border-top: 1px solid rgba(200, 170, 140, 0.2);
+      margin: 1.1rem 0;
+    }
+
+    /* GitHub link pill */
+    .kin-gh-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      background: var(--chip-bg);
+      border: 1px solid rgba(120, 84, 60, 0.65);
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      margin-top: 0.8rem;
+    }
+
+    .kin-gh-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .kin-gh-icon {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 
 <body>
-  
+
   <!-- TOP NAV -->
   <header class="top-nav">
     <div class="nav-inner">
@@ -60,7 +175,7 @@
       </div>
 
       <p class="hero-tagline">
-        I’m an electrical &amp; computer engineering student who loves building things
+        I'm an electrical &amp; computer engineering student who loves building things
         that move, sense, and actually solve problems — from medical devices and
         robotics to libraries and tools.
       </p>
@@ -96,7 +211,8 @@
       <div class="section-header">
         <h2>About</h2>
         <p class="section-subtitle">
-          A bit more about me, my background, and what I’m passionate about.
+          A bit more about me, my background, and what I'm passionate about.
+        </p>
       </div>
 
       <div class="about-layout">
@@ -110,20 +226,20 @@
 
         <div class="about-text">
           <p>
-            I’m Mohammed, an electrical &amp; computer engineering student who enjoys
+            I'm Mohammed, an electrical &amp; computer engineering student who enjoys
             working close to the hardware: robots, sensors, and the software that
             ties everything together.
           </p>
           <p>
-            I’ve co-founded a startup working on a device to measure postpartum blood
-            loss more accurately, and I’ve built robotics projects where I own both
+            I've co-founded a startup working on a device to measure postpartum blood
+            loss more accurately, and I've built robotics projects where I own both
             the technical implementation and the product thinking: what the system
             should actually do, and why it matters.
           </p>
-          <p>Right now, I’m focused on:</p>
+          <p>Right now, I'm focused on:</p>
           <ul>
             <li>Designing HemoSave around real clinical gaps and workflows.</li>
-            <li>Building robots that feel purposeful, not just “demoable”.</li>
+            <li>Building robots that feel purposeful, not just "demoable".</li>
             <li>
               Developing a kinematics library that makes robotics math less painful to use.
             </li>
@@ -159,6 +275,8 @@
       </div>
 
       <div class="project-details">
+
+        <!-- HEMOSAVE -->
         <article id="hemosave" class="project-detail-card">
           <h3>HemoSave Device</h3>
           <p class="project-detail-label">About this project</p>
@@ -191,6 +309,7 @@
           </p>
         </article>
 
+        <!-- SANTABOT -->
         <article id="santabot" class="project-detail-card">
           <h3>SantaBot</h3>
           <p class="project-detail-label">About this project</p>
@@ -208,44 +327,145 @@
           </p>
 
           <ul class="project-bullets">
-            <li>
-              Implemented behaviors that react to the environment in real time.
-            </li>
-            <li>
-              Used this project as a sandbox to test control ideas and hardware integrations.
-            </li>
+            <li>Implemented behaviors that react to the environment in real time.</li>
+            <li>Used this project as a sandbox to test control ideas and hardware integrations.</li>
           </ul>
-
 
           <p class="project-status">
             Status: Complete for now &bull; Future upgrades possible.
           </p>
         </article>
 
+        <!-- KINEMATICS LIBRARY — enriched section -->
         <article id="kinematics" class="project-detail-card">
           <h3>Kinematics Library</h3>
           <p class="project-detail-label">About this project</p>
           <p>
             A lot of robotics students run into the same wall: the math behind
             kinematics is already hard, and the libraries they use can feel opaque,
-            under-documented, or too tied to specific hardware.
+            under-documented, or too tied to specific hardware. This library is my
+            attempt to fix that — starting from the math, not the framework.
           </p>
           <p>
-            This kinematics library aims to close that gap — helping translate the math on paper into abstractions that are intuitive, modular, and ready to plug into real systems.
+            It's built around a <code>SerialChain</code> abstraction that accepts
+            any mix of revolute and prismatic joints, handles symbolic design parameters
+            (link lengths, offsets) separately from runtime joint angles, and exposes
+            both symbolic and high-speed numeric paths.
           </p>
 
+          <!-- Tech spec grid -->
+          <div class="kin-spec-grid">
+            <div class="kin-spec-card">
+              <div class="kin-spec-label">FK — Numeric</div>
+              <div class="kin-spec-value">SE(3) chain via Rodrigues formula; batched NumPy einsum for N configurations simultaneously</div>
+            </div>
+            <div class="kin-spec-card">
+              <div class="kin-spec-label">FK — Symbolic</div>
+              <div class="kin-spec-value">SymPy expressions for end-effector position and the full geometric Jacobian, cached after first build</div>
+            </div>
+            <div class="kin-spec-card">
+              <div class="kin-spec-label">Workspace Sampling</div>
+              <div class="kin-spec-value">Vectorized batched FK over thousands of random configs; optional SciPy convex hull for a solid mesh</div>
+            </div>
+            <div class="kin-spec-card">
+              <div class="kin-spec-label">3D Visualizer</div>
+              <div class="kin-spec-value">Interactive Plotly + Dash app with live sliders for joint angles and design parameters</div>
+            </div>
+          </div>
+
+          <hr class="kin-divider" />
+
+          <p class="project-detail-label">How it works</p>
+          <p>
+            A robot is described by listing joints with <code>R()</code> (revolute) or
+            <code>P()</code> (prismatic) calls. Joint origins and axes can be symbolic
+            expressions — so link lengths and offsets stay as parameters until you're
+            ready to fix numbers. The chain pre-compiles home-pose transforms whenever
+            the design changes, keeping per-query FK fast.
+          </p>
+
+          <!-- Code example -->
+          <div class="kin-code-block">
+            <pre><span class="cm"># Define a 3-DOF arm with symbolic link lengths</span>
+<span class="kw">chain</span> = SerialChain(
+    joints=[
+        <span class="cls">R</span>(<span class="str">"z"</span>, at=(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>), q=<span class="str">"q1"</span>),
+        <span class="cls">R</span>(<span class="str">"y"</span>, at=(L1, <span class="num">0</span>, <span class="num">0</span>), q=<span class="str">"q2"</span>),
+        <span class="cls">P</span>(<span class="str">"z"</span>, at=(L2, <span class="num">0</span>, <span class="num">0</span>), q=<span class="str">"q3"</span>),
+    ],
+    ee=(<span class="str">"L3"</span>, <span class="num">0</span>, <span class="num">0</span>),
+)
+
+<span class="cm"># Numeric FK — single config</span>
+pts = chain.fk_points({L1: <span class="num">0.4</span>, L2: <span class="num">0.3</span>, L3: <span class="num">0.2</span>},
+                       {q1: <span class="num">0.5</span>, q2: <span class="num">-0.3</span>, q3: <span class="num">0.1</span>})
+
+<span class="cm"># Symbolic Jacobian — computed once, then cached</span>
+J = chain.jacobian_symbolic()</pre>
+          </div>
+
+          <hr class="kin-divider" />
+
+          <p class="project-detail-label">What's built so far</p>
           <ul class="project-bullets">
-            <li>Focus on clarity of API and documentation, not just performance.</li>
-            <li>Designed to be modular so specific pieces can be reused.</li>
             <li>
-              Experimental space to encode my own understanding of robot motion in code.
+              <strong>SerialChain core</strong> — forward kinematics (single and batched),
+              SE(3) transforms, home-frame compilation with design-change detection.
+            </li>
+            <li>
+              <strong>Symbolic layer</strong> — SymPy end-effector position expression and
+              geometric Jacobian, useful for deriving closed-form IK or checking singularities.
+            </li>
+            <li>
+              <strong>Workspace visualizer</strong> — Dash app with real-time 3D rendering of
+              joint cylinders, rotation-axis arrows, arc indicators, and a reachable workspace
+              cloud (convex hull if SciPy is available, point cloud otherwise).
+            </li>
+            <li>
+              <strong>Modular geometry</strong> — separate helpers for cylinder meshes,
+              orthonormal frame construction, and arrowhead lines keep the rendering layer
+              decoupled from the math core.
             </li>
           </ul>
 
-          <p class="project-status">
-            Status: Active &bull; Being expanded as I learn.
+          <!-- Feature tags -->
+          <div class="kin-feature-row">
+            <span class="kin-feature-tag">Python</span>
+            <span class="kin-feature-tag">NumPy</span>
+            <span class="kin-feature-tag">SymPy</span>
+            <span class="kin-feature-tag">Plotly / Dash</span>
+            <span class="kin-feature-tag">SciPy</span>
+            <span class="kin-feature-tag">SE(3) Math</span>
+            <span class="kin-feature-tag">Jacobian</span>
+            <span class="kin-feature-tag">Workspace Sampling</span>
+          </div>
+
+          <div>
+            <a
+              href="https://github.com/mfarahp14"
+              class="kin-gh-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg class="kin-gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58
+                  0-.29-.01-1.05-.01-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76
+                  -1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1
+                  .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22
+                  -.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005
+                  2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24
+                  1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01
+                  2.9-.01 3.29 0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+
+          <p class="project-status" style="margin-top: 1rem;">
+            Status: Active &bull; Being expanded as I learn — IK and dynamics coming next.
           </p>
         </article>
+
       </div>
     </section>
 
@@ -296,7 +516,7 @@
       <div class="section-header">
         <h2>Contact</h2>
         <p class="section-subtitle">
-          I’m always interested in projects that mix hardware, software, and real users.
+          I'm always interested in projects that mix hardware, software, and real users.
         </p>
       </div>
 
