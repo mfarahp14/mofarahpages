@@ -1,60 +1,23 @@
-/* === AUTOPLAY NAME, CONTROLLED STYLES === */
+/* === TYPE NAME ONCE, THEN HOLD === */
 const text = "MOHAMMED FARAH";
 const nameEl = document.getElementById("name");
-
-// Typing state
 let i = 0;
-let direction = 1; // 1 = typing, -1 = deleting
-let styleIndex = 0;
-
-// Subtle preset styles (fits the coffee theme but still clean)
-const stylePresets = [
-  { letterSpacing: "0.10em", fontWeight: "400", opacity: 0.9 },
-  { letterSpacing: "0.16em", fontWeight: "500", opacity: 1 },
-  { letterSpacing: "0.14em", fontWeight: "600", opacity: 0.95 }
-];
-
-function applyStyle() {
-  if (!nameEl) return;
-  const s = stylePresets[styleIndex];
-  Object.assign(nameEl.style, s);
-}
-
-// Start with first style
-applyStyle();
 
 function tick() {
   if (!nameEl) return;
-
   nameEl.textContent = text.slice(0, i);
-
-  if (direction === 1) {
-    // typing forward
-    if (i < text.length) {
-      i++;
-    } else {
-      direction = -1;
-      setTimeout(tick, 800);
-      return;
-    }
+  if (i < text.length) {
+    i++;
+    setTimeout(tick, 90);
   } else {
-    // deleting
-    if (i > 0) {
-      i--;
-    } else {
-      direction = 1;
-      styleIndex = (styleIndex + 1) % stylePresets.length;
-      applyStyle();
-      setTimeout(tick, 350);
-      return;
+    const cursor = document.querySelector(".cursor");
+    if (cursor) {
+      cursor.style.animation = "none";
+      cursor.style.opacity = "0.85";
     }
   }
-
-  const speed = direction === 1 ? 90 : 60;
-  setTimeout(tick, speed);
 }
 
-// Kick off typing loop
 tick();
 
 /* === BOUNCE + SCROLL PROJECT TILES === */
@@ -98,6 +61,45 @@ navLinks.forEach(link => {
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
+}
+
+/* === HAMBURGER MOBILE NAV === */
+const hamburger = document.querySelector(".hamburger");
+const navLinksEl = document.querySelector(".nav-links");
+
+if (hamburger && navLinksEl) {
+  hamburger.addEventListener("click", () => {
+    const isOpen = navLinksEl.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  navLinksEl.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinksEl.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+/* === ACTIVE SECTION NAV INDICATOR === */
+const sections = document.querySelectorAll("section[id]");
+const allNavLinks = document.querySelectorAll(".nav-links a[href^='#']");
+
+if ("IntersectionObserver" in window && allNavLinks.length) {
+  const sectionObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          allNavLinks.forEach(a => a.classList.remove("active"));
+          const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add("active");
+        }
+      });
+    },
+    { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+  );
+
+  sections.forEach(s => sectionObserver.observe(s));
 }
 
 /* === REVEAL ON SCROLL FOR SECTIONS === */

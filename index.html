@@ -9,6 +9,12 @@
   <!-- Basic SEO -->
   <meta name="description" content="Personal portfolio of Mohammed Farah – student engineer building robotics, healthtech, and product-focused systems." />
 
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="Mohammed Farah | Portfolio" />
+  <meta property="og:description" content="ECE student building robotics, healthtech, and product-focused systems." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -167,9 +173,15 @@
   <!-- TOP NAV -->
   <header class="top-nav">
     <div class="nav-inner">
-      <a href="#home" class="logo">
+      <a href="#home" class="logo" aria-label="Home">
         <span class="logo-text">Mohammed Farah</span>
       </a>
+
+      <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
       <nav class="nav-links">
         <a href="#home">Home</a>
@@ -547,6 +559,9 @@ J = chain.jacobian_symbolic()</pre>
       </div>
 
       <div class="contact-layout">
+        <p class="contact-cta">
+          Feel free to reach out — whether it's a research collaboration, internship opportunity, or just to talk robotics.
+        </p>
         <ul class="contact-list">
           <li>
             <span class="contact-label">Email</span>
