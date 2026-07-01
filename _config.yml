@@ -1,0 +1,5 @@
+title: Mohammed Farah
+description: ECE student building robotics, healthtech, and product-focused systems.
+url: "https://mohammedfarah.com"
+markdown: kramdown
+permalink: /blog/:title/

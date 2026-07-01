@@ -1,0 +1,148 @@
+---
+layout: null
+title: Blog — Mohammed Farah
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blog — Mohammed Farah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Writing about robotics, building things, and what I'm learning along the way." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/script.js" defer></script>
+
+  <style>
+    .blog-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    .blog-heading {
+      margin: 0 0 0.3rem;
+      font-size: 1.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .blog-sub {
+      margin: 0 0 2.5rem;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    .post-list {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .post-card {
+      display: block;
+      background: var(--card-bg);
+      border-radius: 1.8rem;
+      padding: 1.5rem 1.5rem 1.3rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      text-decoration: none;
+      color: var(--text-main);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    .post-card-date {
+      margin: 0 0 0.35rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-sub);
+    }
+
+    .post-card-title {
+      margin: 0 0 0.5rem;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+    }
+
+    .post-card-excerpt {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    .blog-empty {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="logo" aria-label="Home">
+        <span class="logo-text">Mohammed Farah</span>
+      </a>
+
+      <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/#about">About</a>
+        <a href="/#projects">Projects</a>
+        <a href="/#skills">Skills</a>
+        <a href="/#contact">Contact</a>
+        <a href="/blog/" class="active">Blog</a>
+        <a
+          href="/assets/Mohammed_Farah_Resume.pdf"
+          class="btn nav-resume"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download Resume
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="blog-wrap">
+    <h1 class="blog-heading">Blog</h1>
+    <p class="blog-sub">Writing about robotics, building things, and what I'm learning.</p>
+
+    <div class="post-list">
+      {% if site.posts.size > 0 %}
+        {% for post in site.posts %}
+          <a href="{{ post.url }}" class="post-card">
+            <p class="post-card-date">{{ post.date | date: "%-d %B %Y" }}</p>
+            <h2 class="post-card-title">{{ post.title }}</h2>
+            <p class="post-card-excerpt">{{ post.excerpt | strip_html | truncate: 200 }}</p>
+          </a>
+        {% endfor %}
+      {% else %}
+        <p class="blog-empty">No posts yet — check back soon.</p>
+      {% endif %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Mohammed Farah.</span>
+    <span class="footer-dot">•</span>
+    <span>Built on GitHub Pages.</span>
+  </footer>
+</body>
+</html>
